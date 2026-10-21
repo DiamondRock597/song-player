@@ -65,3 +65,4 @@ Update this table whenever a screen is added.
 | Lyrics | — | `(tabs)/lyrics` | Placeholder (visual only) |
 | Account | — | `(tabs)/account` | Placeholder (visual only) |
 | `SearchScreen` | `search` | TBD | Planned |
+| `TabBar` (overlay) | — (`components/tab-bar/`) | `(tabs)/_layout.tsx` via `tabBar={TabBar}` | Done — absolute over content; labels/icons from each `Tabs.Screen`'s `title` + `tabBarIcon`. Screens reserve space with `useBottomTabBarHeight()` from `expo-router/js-tabs` |
