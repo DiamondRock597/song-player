@@ -15,13 +15,10 @@ import { colors, radii, spacing, typography } from '@/theme';
 import { PLAYER_SUBTITLE } from './constants';
 import { useMiniPlayer } from './use-mini-player';
 
-// Figma `progress-bar-big`: 2pt line.
 const PROGRESS_HEIGHT = 2;
 const COVER_SIZE = 48;
-// Figma `play`: an 18pt glyph, 1.5pt right of centre in the overlay (optical centring).
 const GLYPH_SIZE = 18;
 const PLAY_GLYPH_OFFSET = 3;
-// Spinner / error icon: 24, like the list rows.
 const STATE_ICON_SIZE = 24;
 const ENTER_MS = 220;
 const EXIT_MS = 180;
@@ -173,13 +170,11 @@ const styles = StyleSheet.create({
     transformOrigin: 'left',
     backgroundColor: colors.primary500,
   },
-  // Figma `content`: 20pt right padding after the chevron.
   content: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: spacing[5],
   },
-  // Figma `list-item-mobile`: 20 left, 16 right, 8 vertical, 12 gap.
   item: {
     flex: 1,
     flexDirection: 'row',
@@ -227,7 +222,6 @@ const styles = StyleSheet.create({
     ...typography.caption200,
     color: colors.txt200,
   },
-  // Figma `button-icon`: 4pt padding around the 16pt chevron (24×24); IconButton adds the 44pt hit slop.
   buttonArea: {
     padding: spacing[1],
   },

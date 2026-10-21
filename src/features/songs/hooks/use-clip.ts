@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useQueryClient, type InfiniteData, type QueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 
-import type { GenerationsPage, SongById } from '../api/songs-api';
+import type { GenerationsPage, SongById } from '../api';
 import type { Clip } from '../types';
 import { SONGS_BY_IDS_KEY } from './use-songs-by-ids';
 import { songsListQueryOptions } from './use-songs-query';
@@ -35,14 +35,11 @@ const findClipOutsideList = (queryClient: QueryClient, clipId: string): Clip | u
   return undefined;
 };
 
-// Non-reactive read for press handlers: the list first, then the other song caches.
 export const findCachedClip = (queryClient: QueryClient, clipId: string): Clip | undefined => {
   const list = queryClient.getQueryData(songsListQueryOptions.queryKey);
   return (list ? findClip(list.pages, clipId) : undefined) ?? findClipOutsideList(queryClient, clipId);
 };
 
-// Reads one clip from the songs cache; never fetches on its own.
-// Looks in the list first (reactive), then in the other song caches (search results, id lookups).
 export const useClip = (clipId: string | null): Clip | undefined => {
   const queryClient = useQueryClient();
 

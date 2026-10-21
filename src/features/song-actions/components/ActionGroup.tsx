@@ -12,7 +12,6 @@ type ActionGroupProps = {
   onAction: (key: SongActionKey) => void;
 };
 
-// Figma `group`: one rounded card, full-width 1px dividers between rows.
 export const ActionGroup = memo(({ actions, onAction }: ActionGroupProps) => (
   <View style={styles.card}>
     {actions.map((action, index) => (

@@ -8,7 +8,6 @@ import { useClip } from '@/features/songs';
 
 import type { SongActionKey } from './actions';
 
-// All sheet logic: store <-> modal sync, the clip lookup and the handlers.
 export const useSongActionsSheet = () => {
   const modalRef = useRef<BottomSheetModal>(null);
   const clipId = useSongActionsStore((s) => s.clipId);
@@ -42,7 +41,6 @@ export const useSongActionsSheet = () => {
     showNotImplemented();
   }, []);
 
-  // Covers pan-down, backdrop tap and the close button (which dismisses through the store).
   const onDismiss = useCallback(() => {
     isPresentedRef.current = false;
     close();
@@ -50,7 +48,6 @@ export const useSongActionsSheet = () => {
 
   return {
     modalRef,
-    // The sheet stops below the status bar (Figma: 48pt from the top of the frame).
     topInset: insets.top,
     bottomInset: insets.bottom,
     clipId: shownClipId,

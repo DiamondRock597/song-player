@@ -285,3 +285,17 @@ Add @src/features/player/mini-player.tsx  for search screen as well
 when keyoboard is open player should be vissible above keyboard
 
 ---
+
+### 2026-10-22 01:15 · Claude Code
+Refactor
+- remove a lot of extra comments, leave only important
+- check all files related to /react-native-best-practices 
+- add index.ts files to export
+
+Optimisation:
+1. Bound memory: set `maxPages: 10` on the songs `useInfiniteQuery` and add `getPreviousPageParam`, so pages that were dropped can be fetched again when the user scrolls back up. Confirm the list doesn't jump when old pages are dropped.
+2. Cover placeholder: use `expo-image` with a solid `placeholder` colour from the theme (no blurhash), `recyclingKey={id}` and `cachePolicy="memory-disk"`, so a recycled row never shows the previous cover or an empty gap.
+3. Cancel stale search: pass the TanStack Query `signal` into `fetchGenerationsPage`. The API layer's delay stops on abort, so an old query never overwrites a newer one.
+
+
+---

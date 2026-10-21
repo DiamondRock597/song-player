@@ -7,7 +7,6 @@ import { colors, spacing } from '@/theme';
 import { SearchField } from './SearchField';
 
 const BACK_ICON_SIZE = 16;
-// Grows the 16pt back chevron to a 44pt touch target.
 const BACK_HIT_SLOP = (44 - BACK_ICON_SIZE) / 2;
 const PRESSED_OPACITY = 0.7;
 
@@ -19,10 +18,8 @@ type SearchHeaderProps = {
   onPressBack: () => void;
 };
 
-// Module-level so pressing doesn't allocate a new style per render.
 const backStyle = ({ pressed }: PressableStateCallbackType) => (pressed ? styles.backPressed : styles.back);
 
-// Figma `header-mobile` (1:3134 / 1:3161): 20×16 padding, back chevron and the search field, 12 apart.
 export const SearchHeader = memo(({ inputRef, hasText, onChangeText, onClear, onPressBack }: SearchHeaderProps) => (
   <View style={styles.container}>
     <Pressable

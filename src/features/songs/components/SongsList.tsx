@@ -12,27 +12,21 @@ import { SongSectionHeader } from './SongSectionHeader';
 
 const IN_PROGRESS_TITLE = 'New in progress';
 const END_REACHED_THRESHOLD = 0.5;
+const START_REACHED_THRESHOLD = 0.5;
 
 const keyExtractor = (row: SongListRow) => row.key;
 
 type SongsListProps = {
   rows: readonly SongListRow[];
-  /** Space to keep clear under the last row (e.g. the tab bar). */
   bottomInset: number;
   onEndReached: () => void;
-  /** Press on a completed clip row (plays it), called with the clip id. */
+  onStartReached: () => void;
   onPressClip: (clipId: string) => void;
-  /**
-   * `⋯` on any row, and the press on in-progress and failed rows (nothing to play there),
-   * called with the clip id (clips[0].id for in-progress and failed rows).
-   */
   onPressClipMore: (clipId: string) => void;
 };
 
-// Figma `container` > `box` > `list`: 20pt side padding, 8pt bottom padding.
-// Rows get primitives only; callbacks take the clip id.
 export const SongsList = memo(
-  ({ rows, bottomInset, onEndReached, onPressClip, onPressClipMore }: SongsListProps) => {
+  ({ rows, bottomInset, onEndReached, onStartReached, onPressClip, onPressClipMore }: SongsListProps) => {
   const renderItem: ListRenderItem<SongListRow> = useCallback(
     ({ item }) => {
       switch (item.type) {
@@ -69,6 +63,8 @@ export const SongsList = memo(
       getImageUrl={getRowCoverUrl}
       onEndReached={onEndReached}
       onEndReachedThreshold={END_REACHED_THRESHOLD}
+      onStartReached={onStartReached}
+      onStartReachedThreshold={START_REACHED_THRESHOLD}
       style={styles.list}
       contentContainerStyle={contentContainerStyle}
       showsVerticalScrollIndicator={false}

@@ -10,15 +10,11 @@ import { StyleSheet, View } from 'react-native';
 import { blurs, colors, radii, shadows, spacing } from '@/theme';
 
 import { SONG_ACTION_SECTIONS } from './actions';
-import { ActionGroup } from './components/ActionGroup';
-import { SheetHandle } from './components/SheetHandle';
-import { SheetHeader } from './components/SheetHeader';
+import { ActionGroup, SheetHandle, SheetHeader } from './components';
 import { useSongActionsSheet } from './useSongActionsSheet';
 
-// Full height: the sheet reaches up to `topInset` and the content scrolls if it doesn't fit.
 const SNAP_POINTS = ['100%'];
 
-// Module-level so the reference is stable across renders.
 // Figma `overlay-shape`: overlays/200 tint with a 3px backdrop blur. On Android expo-blur
 // needs a BlurTargetView around the content to blur, so it falls back to a translucent fill there.
 const renderBackdrop = (props: BottomSheetBackdropProps) => (
@@ -34,8 +30,6 @@ const renderBackdrop = (props: BottomSheetBackdropProps) => (
   </BottomSheetBackdrop>
 );
 
-// Figma `bs/song-page/context-menu` (1:5409). Mounted once in (tabs)/_layout.tsx and opened
-// through useSongActionsStore.open(clipId). Fixed full height, stopping below the status bar.
 export const SongActionsSheet = () => {
   const {
     modalRef,

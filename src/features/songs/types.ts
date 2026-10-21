@@ -34,13 +34,11 @@ export type Clip = PendingClip | FailedClip | CompletedClip;
 
 type GenerationBase = {
   id: string;
-  // ISO 8601, UTC.
   createdAt: string;
 };
 
 export type InProgressGeneration = GenerationBase & {
   status: 'in_progress';
-  // 0–100.
   progress: number;
   clips: PendingClip[];
 };
@@ -62,10 +60,8 @@ export type SongsData = {
   generations: Generation[];
 };
 
-// UI: the visual state of one list row (an in-progress or failed generation, or a completed clip).
 export type SongItemStatus = 'in-progress' | 'failed' | 'completed';
 
-// UI: the Songs screen filter chips.
 export type SongFilterKey = 'songs' | 'folders' | 'favorites' | 'archive';
 
 export type SongFilter = {

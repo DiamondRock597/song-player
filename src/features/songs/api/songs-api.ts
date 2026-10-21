@@ -4,7 +4,6 @@ import songsJson from '../../../../songs.json';
 
 import type { Generation, SongsData } from '../types';
 
-// Opaque to callers: pass back whatever nextCursor returned. Internally it is the offset.
 export type GenerationsCursor = number;
 
 export type GenerationsPage = {
@@ -12,7 +11,6 @@ export type GenerationsPage = {
   nextCursor: GenerationsCursor | null;
 };
 
-/** A clip id resolved to the generation it belongs to (its status decides how it renders). */
 export type SongById = {
   clipId: string;
   generation: Generation;
@@ -22,7 +20,6 @@ const { generations } = songsJson as SongsData;
 
 const DIACRITICS = /[̀-ͯ]/g;
 
-// Accent- and case-insensitive form: "Échos" → "echos".
 const normalizeForSearch = (text: string) => text.normalize('NFD').replace(DIACRITICS, '').toLowerCase();
 
 // Normalized once: the titles never change, and every keystroke filters all of them.
@@ -61,7 +58,6 @@ export const fetchGenerationsPage = ({
   }, options);
 };
 
-// Resolves clip ids to their generations, in the order given. Unknown ids are skipped.
 export const getSongsByIds = (
   { ids }: { ids: readonly string[] },
   options?: RequestOptions,

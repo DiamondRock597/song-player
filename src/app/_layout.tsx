@@ -13,7 +13,6 @@ import { fontAssets } from '@/theme';
 const RootLayout = () => {
   const [fontsLoaded, fontError] = useFonts(fontAssets);
 
-  // Render nothing until Inter is ready (falls through on error so the app still opens).
   if (!fontsLoaded && !fontError) return null;
 
   return (

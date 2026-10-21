@@ -22,16 +22,12 @@ type SearchListProps = {
   resultsState: SearchResultsState;
   isFetchingNextPage: boolean;
   onEndReached: () => void;
-  /** Press on any song row (history or result), called with the clip id. */
   onPressRow: (clipId: string) => void;
-  /** `>` on any song row: opens the actions sheet, called with the clip id. */
   onPressMore: (clipId: string) => void;
   onClearHistory: () => void;
   onRetry: () => void;
 };
 
-// Figma `container` > `box` > `list`: 20pt side padding. History and results share one list;
-// song rows are the Songs list rows with `>` (opens the actions) instead of `⋯`.
 export const SearchList = memo(
   ({
     rows,
@@ -113,7 +109,6 @@ const styles = StyleSheet.create({
   // The screen's KeyboardDock shrinks the list above the keyboard, so no keyboard insets here.
   list: { flex: 1 },
   content: { paddingHorizontal: spacing[5], paddingBottom: spacing[2] },
-  // Figma: the history rows start 4pt under the header (36 vs the header's 32).
   historyHeader: { paddingBottom: spacing[1] },
   pageSpinner: {
     alignItems: 'center',

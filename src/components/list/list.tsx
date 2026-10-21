@@ -2,7 +2,6 @@ import { FlashList, type FlashListProps, type ViewToken } from '@shopify/flash-l
 import { Image } from 'expo-image';
 import { memo, useCallback, useEffect, useRef } from 'react';
 
-// FlashList's own default. Pass `drawDistance` to override.
 const DEFAULT_DRAW_DISTANCE = 250;
 const DEFAULT_PREFETCH_AHEAD = 15;
 
@@ -13,15 +12,10 @@ const viewabilityConfig = { itemVisiblePercentThreshold: 1 };
 type ViewableItemsChanged<T> = NonNullable<FlashListProps<T>['onViewableItemsChanged']>;
 
 export type ListProps<T> = Omit<FlashListProps<T>, 'viewabilityConfig' | 'viewabilityConfigCallbackPairs'> & {
-  /** Image URL to prefetch for an item, or null when it has none. Enables cover prefetching. */
   getImageUrl?: (item: T) => string | null | undefined;
-  /** How many rows past the last visible one to prefetch. */
   prefetchAhead?: number;
 };
 
-// FlashList v2 with the app's performance defaults. v2 measures rows itself, so it takes no
-// estimatedItemSize or overrideItemLayout. With `getImageUrl`, it prefetches the images of the next
-// `prefetchAhead` rows whenever the visible rows change, so covers are cached before they scroll in.
 const ListInner = <T,>({
   getImageUrl,
   prefetchAhead = DEFAULT_PREFETCH_AHEAD,
@@ -60,7 +54,6 @@ const ListInner = <T,>({
     if (urls.length === 0) return;
 
     void Image.prefetch(urls).then((ok) => {
-      // Let failed URLs be retried on the next scroll.
       if (!ok) urls.forEach((url) => prefetched.current.delete(url));
     });
   }, []);

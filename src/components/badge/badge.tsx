@@ -10,7 +10,6 @@ export type BadgeProps = {
   tone?: BadgeTone;
 };
 
-// Figma `Tag-origin` (text variant): 8×2 padding, radius md, caption/200 text.
 export const Badge = memo(({ label, tone = 'danger' }: BadgeProps) => (
   <View style={containerByTone[tone]}>
     <Text style={styles.text} numberOfLines={1}>

@@ -29,7 +29,6 @@ import Share07 from './svg/share-07.svg';
 import Star from './svg/star.svg';
 import Trash04 from './svg/trash-04.svg';
 
-// SVGs use `currentColor`, so the `color` prop tints them.
 export const iconMap = {
   'box-2-alt-fill': Box2AltFill,
   'chevron-down': ChevronDown,

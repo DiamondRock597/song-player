@@ -6,24 +6,19 @@ import { colors, radii, spacing, typography } from '@/theme';
 import { Icon, type TIcon } from '../icons';
 
 const ICON_SIZE = 16;
-// Figma `separator`: a 4×4 dot between the label and the count.
 const SEPARATOR_SIZE = 4;
 const PRESSED_OPACITY = 0.7;
 
 export type ChipProps = {
-  /** Passed back to `onPress`, so a list of chips can share one stable handler. */
   value: string;
   label?: string;
   count?: number | string;
   icon?: TIcon;
-  /** Icon-only chips need one. Defaults to the label. */
   accessibilityLabel?: string;
   selected?: boolean;
-  /** Without it the chip is visual only. */
   onPress?: (value: string) => void;
 };
 
-// Figma `nav-items`: pill with a 1pt border, 12×6 padding, caption/250 label · count, or a 16 icon.
 export const Chip = memo(
   ({ value, label, count, icon, accessibilityLabel, selected = false, onPress }: ChipProps) => {
     const handlePress = useCallback(() => onPress?.(value), [onPress, value]);
@@ -111,7 +106,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// Module-level so pressing doesn't allocate a new style per render.
 const defaultStyle = ({ pressed }: PressableStateCallbackType) => (pressed ? styles.chipPressed : styles.chip);
 const selectedStyle = ({ pressed }: PressableStateCallbackType) =>
   pressed ? styles.chipSelectedPressed : styles.chipSelected;

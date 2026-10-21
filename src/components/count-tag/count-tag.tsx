@@ -3,14 +3,12 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { colors, radii, spacing, typography } from '@/theme';
 
-// Figma `_Tag count`: a 16pt-tall inner box.
 const COUNT_HEIGHT = 16;
 
 export type CountTagProps = {
   count: number | string;
 };
 
-// Figma `Tag-origin` with `_Tag count`: bg/200 frame, 1pt padding, bg/800 inner box, caption/200 text.
 export const CountTag = memo(({ count }: CountTagProps) => (
   <View style={styles.tag}>
     <View style={styles.count}>

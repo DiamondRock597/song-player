@@ -1,8 +1,6 @@
-import type { GenerationsPage } from './api/songs-api';
+import type { GenerationsPage } from './api';
 import type { CompletedClip, FailedGeneration, Generation, InProgressGeneration } from './types';
 
-// One FlashList row. An in-progress generation and a failed one each render as a single row;
-// a completed generation contributes one row per clip.
 export type SongRow =
   | { type: 'in-progress-header'; key: string }
   | { type: 'date-header'; key: string; dayKey: string; date: Date }
@@ -12,7 +10,6 @@ export type SongRow =
 
 export type SongRowType = SongRow['type'];
 
-/** A row that renders a song (not a section header). Shared with Search through `SongListItem`. */
 export type SongItemRow = Extract<SongRow, { type: 'in-progress' | 'failed' | 'clip' }>;
 
 // The song rows of one generation. `keyPrefix` keeps keys unique when the same song appears
@@ -33,7 +30,6 @@ export const generationToRows = (generation: Generation, keyPrefix = ''): SongIt
   }
 };
 
-// Local calendar day, e.g. "2026-10-19".
 const toDayKey = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
@@ -69,7 +65,6 @@ export const flattenPages = (pages: readonly GenerationsPage[]): SongRow[] => {
 
 export const getRowType = (row: SongRow): SongRowType => row.type;
 
-// The cover a row shows, for prefetching. Headers and failed rows have none.
 export const getRowCoverUrl = (row: SongRow): string | null => {
   switch (row.type) {
     case 'clip':

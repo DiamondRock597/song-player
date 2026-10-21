@@ -18,11 +18,9 @@ const DEFAULT_DURATION_MS = 1000;
 export type SpinnerProps = {
   size?: number;
   color?: string;
-  /** One full turn, in ms. */
   duration?: number;
 };
 
-// `loading-04` arc rotating forever on the UI thread.
 export const Spinner = memo(
   ({ size = DEFAULT_SIZE, color = colors.misc100, duration = DEFAULT_DURATION_MS }: SpinnerProps) => {
     const turn = useSharedValue(0);

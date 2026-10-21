@@ -6,16 +6,11 @@ import { SongRow, type SongRowTrailing } from './SongRow';
 type SongListItemProps = {
   row: SongItemRow;
   trailing: SongRowTrailing;
-  /** Press on a completed clip row, called with the clip id. */
   onPressClip: (clipId: string) => void;
-  /** Press on an in-progress or failed row (nothing to play), called with clips[0].id. */
   onPressPending: (clipId: string) => void;
-  /** Trailing button press (`⋯` or `>`), called with the clip id. */
   onPressMore: (clipId: string) => void;
 };
 
-// Picks the `SongRow` props for one song row (in-progress / failed generation, or a completed clip).
-// Shared by the Songs list and Search, so both render a generation the same way.
 export const SongListItem = memo(({ row, trailing, onPressClip, onPressPending, onPressMore }: SongListItemProps) => {
   switch (row.type) {
     case 'in-progress': {

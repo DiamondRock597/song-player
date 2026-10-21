@@ -8,7 +8,6 @@ import { MESSAGE_TOAST_TYPE } from './toast';
 
 const VISIBILITY_MS = 2000;
 
-// No toast frame in Figma: styled with the sheet tokens (card surface, primary text).
 const toastConfig: ToastConfig = {
   [MESSAGE_TOAST_TYPE]: ({ text1 }) => (
     <View style={styles.toast} accessibilityRole="alert" accessibilityLiveRegion="polite">

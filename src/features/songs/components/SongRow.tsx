@@ -7,12 +7,10 @@ import { colors, radii, spacing, typography } from '@/theme';
 import type { SongItemStatus } from '../types';
 import { SongCover } from './SongCover';
 
-// Figma `additional` line: 16 tall; the progress label sits in a 32-wide box.
 const SUPPORTING_LINE_HEIGHT = 16;
 const PROGRESS_LABEL_WIDTH = 32;
 const PRESSED_OPACITY = 0.7;
 
-/** The trailing `Action Button` glyph: `more` = `⋯` (Songs list), `chevron` = `>` (Search). Both open the actions. */
 export type SongRowTrailing = 'more' | 'chevron';
 
 const trailingIcon = {
@@ -25,22 +23,16 @@ type SongRowProps = {
   status: SongItemStatus;
   title: string;
   variant: number;
-  /** Tags (completed) or the failure message (failed). Unused while in progress. */
   subtitle: string;
-  /** 0–100, used while in progress. */
   progress: number;
   coverUrl: string | null;
   onPress: (id: string) => void;
-  /** Trailing button press (`⋯` or `>`). */
   onPressMore: (id: string) => void;
   trailing?: SongRowTrailing;
 };
 
-// Module-level so pressing doesn't allocate a new style per render.
 const rowStyle = ({ pressed }: PressableStateCallbackType) => (pressed ? styles.rowPressed : styles.row);
 
-// Figma `list-item-mobile`: cover, title + variant tag (or Error badge), a supporting line,
-// then the trailing `Action Button` (`⋯` or `>`).
 export const SongRow = memo(
   ({
     id,

@@ -7,7 +7,6 @@ import { colors, radii, spacing, typography } from '@/theme';
 
 const COVER_SIZE = 48;
 const CLOSE_ICON_SIZE = 16;
-// Grows the 16pt close glyph to a 44pt touch target.
 const CLOSE_HIT_SLOP = (44 - CLOSE_ICON_SIZE) / 2;
 
 type SheetHeaderProps = {
@@ -19,7 +18,6 @@ type SheetHeaderProps = {
   onClose: () => void;
 };
 
-// Figma `list-item` (1:5532) plus the absolute close button (1:5533).
 export const SheetHeader = memo(({ clipId, title, variant, tags, coverUrl, onClose }: SheetHeaderProps) => (
   <View>
     <View style={styles.row}>
@@ -81,7 +79,6 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     gap: spacing[1],
-    // Keeps a long title clear of the close button in the top-right corner.
     paddingRight: CLOSE_ICON_SIZE + spacing[2],
   },
   titleRow: {

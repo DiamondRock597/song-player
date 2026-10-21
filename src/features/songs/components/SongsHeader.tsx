@@ -9,7 +9,6 @@ type SongsHeaderProps = {
   onPressCreate: () => void;
 };
 
-// Figma `header-mobile` (1:3082): 20×16 padding, title200 "Songs", search (ghost) and `+` (primary), 12 apart.
 export const SongsHeader = memo(({ onPressSearch, onPressCreate }: SongsHeaderProps) => (
   <View style={styles.container}>
     <Text style={styles.title} numberOfLines={1} accessibilityRole="header">

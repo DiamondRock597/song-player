@@ -6,7 +6,6 @@ import { SongActionsSheet } from '@/features/song-actions';
 
 type TabBarIcon = NonNullable<BottomTabNavigationOptions['tabBarIcon']>;
 
-// Module-level so the references stay stable for the memoized tab items.
 const createIcon: TabBarIcon = ({ color, size }) => <Icon name="music-note-02" size={size} color={color} />;
 const songsIcon: TabBarIcon = ({ color, size }) => <Icon name="headphones" size={size} color={color} />;
 const lyricsIcon: TabBarIcon = ({ color, size }) => <Icon name="pencil-02" size={size} color={color} />;
@@ -21,9 +20,6 @@ const miniPlayer = <MiniPlayer />;
 // mounted as an element; passing it directly would run its hooks outside a component.
 const renderTabBar = (props: BottomTabBarProps) => <TabBar {...props} accessory={miniPlayer} />;
 
-// Tab order follows the design: Create / Songs / Lyrics / Account.
-// Songs is the real screen; the other tabs open placeholder screens.
-// `index` (Songs) is the group's initial route by default.
 const TabsLayout = () => {
   return (
     <>

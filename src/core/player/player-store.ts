@@ -21,7 +21,6 @@ export const initialPlayerState: PlayerState = {
 // Not exported from index.ts, so the rest of the app can only read through the hooks below.
 export const usePlayerStore = create<PlayerState>()(() => initialPlayerState);
 
-// Boolean per row: re-renders only when this track starts or stops, never on progress.
 // 'loading' counts as playing so the row shows its pause state right after a tap.
 export const useIsTrackPlaying = (trackId: string): boolean => {
   return usePlayerStore(
@@ -29,7 +28,6 @@ export const useIsTrackPlaying = (trackId: string): boolean => {
   );
 };
 
-// Whether the global player is on screen (a track is loaded). Flips only on show/hide.
 export const useIsPlayerVisible = (): boolean => {
   return usePlayerStore((s) => s.currentTrack !== null);
 };

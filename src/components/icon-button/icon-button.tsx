@@ -7,10 +7,6 @@ import { Icon, type TIcon } from '../icons';
 
 const ICON_SIZE = 16;
 const MIN_TOUCH_TARGET = 44;
-// Figma `Action Button` variants, all around a 16 icon:
-// - padded: transparent, 8 padding → 32×32 (list row `⋯`);
-// - ghost: the bare icon → 16×16 (header search);
-// - primary: primary/500 fill, 2pt inside stroke, skeuomorphic shadow → 24×24 (header `+`).
 const PADDED_SIZE = ICON_SIZE + spacing[2] * 2;
 const PRIMARY_SIZE = ICON_SIZE + spacing[1] * 2;
 const PRIMARY_BORDER_WIDTH = 2;
@@ -23,7 +19,6 @@ export type IconButtonProps = {
   accessibilityLabel: string;
   onPress: () => void;
   variant?: IconButtonVariant;
-  /** Overrides the variant's icon color. */
   color?: string;
 };
 
@@ -39,7 +34,6 @@ const iconColorByVariant = {
   primary: colors.primary100Contrast,
 } satisfies Record<IconButtonVariant, string>;
 
-// Grows each variant to a 44pt touch target.
 const hitSlopByVariant = {
   padded: (MIN_TOUCH_TARGET - PADDED_SIZE) / 2,
   ghost: (MIN_TOUCH_TARGET - ICON_SIZE) / 2,
@@ -99,7 +93,6 @@ const styles = StyleSheet.create({
   primaryPressed: { ...primary, opacity: PRESSED_OPACITY },
 });
 
-// Module-level so pressing doesn't allocate a new style per render.
 const styleByVariant = {
   padded: ({ pressed }: PressableStateCallbackType) => (pressed ? styles.paddedPressed : styles.padded),
   ghost: ({ pressed }: PressableStateCallbackType) => (pressed ? styles.ghostPressed : styles.ghost),

@@ -3,7 +3,6 @@ import type { TIcon } from '@/components';
 type SongAction = { key: string; label: string; icon: TIcon };
 type SongActionSection = { key: string; actions: readonly SongAction[] };
 
-// One entry per card in the sheet, in design order (Figma 1:5534).
 export const SONG_ACTION_SECTIONS = [
   {
     key: 'generate',

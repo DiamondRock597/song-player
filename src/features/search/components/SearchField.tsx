@@ -13,7 +13,6 @@ import { colors, radii, spacing, typography } from '@/theme';
 
 const PLACEHOLDER = 'Search songs, lyrics, and more';
 const ICON_SIZE = 16;
-// Figma `button-primary`: 6×4 padding around a 16 icon = 28×24.
 const BUTTON_WIDTH = ICON_SIZE + spacing[1.5] * 2;
 const BUTTON_HEIGHT = ICON_SIZE + spacing[1] * 2;
 const MIN_TOUCH_TARGET = 44;
@@ -28,16 +27,13 @@ const PRESSED_OPACITY = 0.7;
 
 type SearchFieldProps = {
   inputRef: RefObject<TextInputInstance | null>;
-  /** Shows ✕ instead of the search icon. */
   hasText: boolean;
   onChangeText: (text: string) => void;
   onClear: () => void;
 };
 
-// Module-level so pressing doesn't allocate a new style per render.
 const clearStyle = ({ pressed }: PressableStateCallbackType) => (pressed ? styles.buttonPressed : styles.button);
 
-// Figma `top-nav-search-field`: 8 vertical padding, 6 gap, a border/100 bottom line.
 // The TextInput is uncontrolled (no `value`), so typing never waits on a JS render.
 export const SearchField = memo(({ inputRef, hasText, onChangeText, onClear }: SearchFieldProps) => (
   <View style={styles.container}>

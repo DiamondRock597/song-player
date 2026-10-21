@@ -6,7 +6,6 @@ import { spacing } from '@/theme';
 
 import type { SongFilter, SongFilterKey } from '../types';
 
-// Figma `navbar` (1:3083) is 44 tall; its 30pt chips overflow the 8pt padding, centred.
 const NAVBAR_HEIGHT = 44;
 const FILTER_ICON_CHIP = 'filter-settings';
 
@@ -16,7 +15,6 @@ type SongsFilterBarProps = {
   onSelect: (key: string) => void;
 };
 
-// Filter-settings chip (visual only), then one chip per filter. Scrolls horizontally.
 export const SongsFilterBar = memo(({ filters, selected, onSelect }: SongsFilterBarProps) => (
   <ScrollView
     horizontal

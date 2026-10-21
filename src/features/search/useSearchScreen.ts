@@ -12,17 +12,14 @@ import {
   toResultRows,
   type SearchRow,
 } from './search-rows';
-import { useSearchHistoryStore } from './store/search-history-store';
+import { useSearchHistoryStore } from './store';
 import type { SearchResultsState } from './types';
 
 const EMPTY_ROWS: readonly SearchRow[] = [];
 const EMPTY_ITEMS: readonly SongItemRow[] = [];
 
-// All Search screen logic: input, the debounced search query, history, handlers.
-// SearchScreen.tsx only renders what this hook returns.
 export const useSearchScreen = () => {
   const inputRef = useRef<TextInputInstance>(null);
-  // The TextInput is uncontrolled; this mirrors its text for the query and the ✕ button.
   const [input, setInput] = useState('');
 
   const { data, isError, hasNextPage, isFetchingNextPage, isPlaceholderData, fetchNextPage, refetch } =
@@ -65,8 +62,6 @@ export const useSearchScreen = () => {
     setInput('');
   }, []);
 
-  // Same press as a Songs list row (plays a completed clip), plus the history entry.
-  // In-progress and failed rows only get the history entry: there is nothing to play.
   const onPressRow = useCallback(
     (clipId: string) => {
       addToHistory(clipId);
@@ -75,7 +70,6 @@ export const useSearchScreen = () => {
     [addToHistory, playClip],
   );
 
-  // `>` on a row: the actions sheet, like the Songs list's `⋯` (no history entry, no playback).
   // The sheet is global (rendered through the root portal, above this route); the keyboard goes
   // down first so it doesn't cover the sheet.
   const onPressMore = useCallback(

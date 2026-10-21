@@ -4,12 +4,10 @@ import Animated from 'react-native-reanimated';
 
 import { colors, radii, spacing } from '@/theme';
 
-// Figma `Progress`: a 4pt fill inside a 2pt-padded track.
 const FILL_HEIGHT = 4;
 const FILL_TRANSITION_MS = 600;
 
 export type ProgressBarProps = {
-  /** 0–100 */
   progress: number;
 };
 
@@ -17,7 +15,6 @@ export type ProgressBarProps = {
 // both via a Reanimated CSS transition on `width`. Remount (e.g. `key`) to replay the intro.
 export const ProgressBar = memo(({ progress }: ProgressBarProps) => {
   const value = Math.min(100, Math.max(0, progress));
-  // First frame renders an empty fill so the transition has something to start from.
   const [started, setStarted] = useState(false);
 
   useEffect(() => {

@@ -6,7 +6,6 @@ import { colors, spacing, typography } from '@/theme';
 
 import type { SearchResultsState } from '../types';
 
-// Not in Figma: the loading / empty / error blocks sit centred, 48pt under the "Songs" header.
 const TOP_OFFSET = 48;
 const SPINNER_SIZE = 24;
 const MIN_TOUCH_TARGET = 44;
@@ -17,7 +16,6 @@ type SearchStatusProps = {
   onRetry: () => void;
 };
 
-// Module-level so pressing doesn't allocate a new style per render.
 const retryStyle = ({ pressed }: PressableStateCallbackType) => (pressed ? styles.retryPressed : styles.retry);
 
 export const SearchStatus = memo(({ state, onRetry }: SearchStatusProps) => {

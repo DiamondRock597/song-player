@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 
 import { colors, radii, spacing } from '@/theme';
 
-// Figma `top` (1:5528): 8 above, 12 below, a 32×4 pill. The library makes it draggable.
 export const SheetHandle = memo((_props: BottomSheetHandleProps) => (
   <View style={styles.container}>
     <View style={styles.indicator} />

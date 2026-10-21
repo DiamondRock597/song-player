@@ -21,7 +21,6 @@ type TabBarItemProps = {
 };
 
 const ICON_SIZE = 20;
-// Press squish: the content sinks while held and bounces back on release.
 const PRESSED_SCALE = 0.88;
 const PRESS_SPRING = { damping: 12, stiffness: 320 };
 
@@ -65,7 +64,6 @@ export const TabBarItem = memo(
 TabBarItem.displayName = 'TabBarItem';
 
 const styles = StyleSheet.create({
-  // Figma tabbar-item: 80×56 at 360 wide (flex: 1), padding 8 top / 12 bottom.
   item: {
     flex: 1,
     paddingTop: spacing[2],

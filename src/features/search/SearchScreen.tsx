@@ -5,8 +5,7 @@ import { KeyboardDock } from '@/components';
 import { MiniPlayer } from '@/features/player';
 import { colors } from '@/theme';
 
-import { SearchHeader } from './components/SearchHeader';
-import { SearchList } from './components/SearchList';
+import { SearchHeader, SearchList } from './components';
 import { useSearchScreen } from './useSearchScreen';
 
 // Figma `bs/songs-list/default/search/01` (results) and `/02` (history). A root-stack route,
@@ -59,6 +58,5 @@ export const SearchScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  // Figma frame fill: bg/900.
   container: { flex: 1, backgroundColor: colors.bg900 },
 });

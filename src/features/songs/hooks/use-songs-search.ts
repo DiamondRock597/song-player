@@ -1,13 +1,11 @@
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { fetchGenerationsPage, type GenerationsCursor } from '../api/songs-api';
+import { fetchGenerationsPage, type GenerationsCursor } from '../api';
 import { PAGE_LIMIT } from './use-songs-query';
 
 const DEBOUNCE_MS = 250;
 
-// Pass the raw input value; the request fires once it has been stable for DEBOUNCE_MS.
-// The query is disabled while the trimmed input is empty.
 export const useSongsSearch = (input: string) => {
   const [debouncedQuery, setDebouncedQuery] = useState(() => input.trim());
 

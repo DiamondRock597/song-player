@@ -5,7 +5,6 @@ import type { PlayerStatus, Track } from './types';
 
 const PROGRESS_WRITE_INTERVAL_MS = 250;
 
-// The only player in the app. Created once at module load; never create another.
 export const audioPlayer = createAudioPlayer();
 
 let lastProgressWriteAt = 0;
@@ -45,7 +44,6 @@ export const togglePlay = (): void => {
   }
 };
 
-// Stops playback, unloads the source and hides the global player.
 // `replace(null)` is a valid AudioSource in the installed expo-audio and releases the current item.
 export const stopAndHide = (): void => {
   // Reset first: the status listener returns early once currentTrack is null, so the events
@@ -56,7 +54,6 @@ export const stopAndHide = (): void => {
     audioPlayer.pause();
     audioPlayer.replace(null);
   } catch {
-    // Nothing loaded or already released: the store is reset either way.
   }
 };
 
@@ -72,7 +69,6 @@ const toPlayerStatus = (status: AudioStatus): PlayerStatus => {
   return status.playing ? 'playing' : 'paused';
 };
 
-// The single feed from the native player into the store.
 audioPlayer.addListener('playbackStatusUpdate', (status) => {
   const state = usePlayerStore.getState();
   if (state.currentTrack === null) return;

@@ -1,10 +1,6 @@
-export type { GenerationsPage, SongById } from './api/songs-api';
-export { SongListItem } from './components/SongListItem';
-export { SongSectionHeader } from './components/SongSectionHeader';
-export { useClip } from './hooks/use-clip';
-export { usePlayClip } from './hooks/use-play-clip';
-export { useSongsByIds } from './hooks/use-songs-by-ids';
-export { useSongsSearch } from './hooks/use-songs-search';
+export type { GenerationsPage, SongById } from './api';
+export { SongListItem, SongSectionHeader } from './components';
+export { useClip, usePlayClip, useSongsByIds, useSongsSearch } from './hooks';
 export { generationToRows, getRowCoverUrl, type SongItemRow } from './song-rows';
 export { SongsScreen } from './SongsScreen';
 export type { Clip } from './types';

@@ -15,7 +15,6 @@ type ActionRowProps = {
   onPress: (key: SongActionKey) => void;
 };
 
-// Figma `dropdown-buttons`: 16 padding, 12 gap, 20 icon, btn/200 label (52pt tall).
 export const ActionRow = memo(({ actionKey, label, icon, onPress }: ActionRowProps) => {
   const handlePress = useCallback(() => onPress(actionKey), [onPress, actionKey]);
 

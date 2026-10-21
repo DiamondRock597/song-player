@@ -17,7 +17,6 @@ export type KeyboardDockProps = {
 // Bottom dock that rides on top of the keyboard: its bottom padding follows the keyboard height on
 // the UI thread, frame by frame, and falls back to the bottom safe-area inset when the keyboard is
 // closed (never both: the keyboard already covers the home indicator / navigation bar).
-// Put it last in a column whose content above is `flex: 1`, so that content shrinks with it.
 export const KeyboardDock = memo(({ children }: KeyboardDockProps) => {
   const keyboard = useAnimatedKeyboard(KEYBOARD_OPTIONS);
   const { bottom } = useSafeAreaInsets();

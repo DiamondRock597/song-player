@@ -15,7 +15,6 @@ export const PlaceholderScreen = ({ title }: PlaceholderScreenProps) => {
 };
 
 const styles = StyleSheet.create({
-  // Same dark background as Songs, so switching tabs doesn't flash a white screen.
   container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg900 },
   title: { ...typography.textTabbarActive, color: colors.txt500 },
 });
