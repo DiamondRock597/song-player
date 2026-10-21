@@ -28,3 +28,19 @@ With active/unactive styles
 https://www.figma.com/design/4R64V2kqls5Wcb5H0bHu44/mockup?node-id=1-3131&t=gtycLHWxK9crDqNm-0
 
 ---
+### 2026-10-21 22:40 · Claude Code
+Build typed registry-driven component in the same style as src/components/Icon/:
+
+- types.ts: import every asset (SVG) once, export a `const xMap = { 'kebab-name': Component, ... } satisfies Record<string, FC<SvgProps>>` and derive the name union with `export type TX = keyof typeof xMap` — the map is the single source of truth, no hand-written union.
+- X.tsx: a `memo`-wrapped component with props `{ name: TX; size?: number } & SvgProps`. Look up `xMap[name]`, render it with `width={width ?? size} height={height ?? size}` plus `...rest` (explicit width/height override `size` for non-square assets), return `null` if the name is unknown. Default size as a named constant.
+- index.ts: re-export only the component, its props type, and `TX`.
+- Keys are kebab-case matching the asset file names, sorted alphabetically; adding an item = one import + one map entry, nothing else.
+
+
+Add it to skills and rules
+
+---
+### 2026-10-21 22:45 · Claude Code
+Install react-native-svg and react-native-svg-transformer  and make the Icon component related to apporch, no matter if we don't have svg files for now
+
+---

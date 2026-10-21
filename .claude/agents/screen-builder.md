@@ -35,7 +35,7 @@ If the design reference or the requirements are missing, stop and return a short
 3. Run `get_screenshot` on the frame and on each state frame. These are the source of truth for pixel accuracy.
 4. Run `get_variable_defs` to get colours, typography, spacing and radii. These become tokens.
 5. Run `get_design_context` on each sub-node separately, not the whole frame at once. Its output is a **reference to adapt**, not code to paste. It is usually web/React; translate it to React Native.
-6. Use `download_assets` for icons and images. SVG icons go into `src/components/icons/`. Raster images go into `assets/images/`.
+6. Use `download_assets` for icons and images. SVG icons go into `src/components/Icon/svg/<kebab-name>.svg` and are registered in `Icon/types.ts`, as described under "Asset registries" in the `architecture` skill. Other named SVG sets get their own registry the same way. Raster images go into `assets/images/`.
 
 ### 3. Tokens before components
 - Put design tokens in `src/theme/` (`colors.ts`, `typography.ts`, `spacing.ts`, `index.ts`). Name them after the Figma variable names.
@@ -80,7 +80,7 @@ Reuse what already exists before you add anything.
 
 ## Boundaries
 
-- **Libraries:** add only with `npx expo install`. You may add `react-native-svg`, `expo-font`, `expo-blur` and `expo-linear-gradient` when the design needs them. Any other new library, or a change to the architecture, state ownership or folder rules, needs a decision: stop and report it with a recommendation instead of doing it.
+- **Libraries:** add only with `npx expo install`. You may add `react-native-svg` (plus `react-native-svg-transformer` as a dev dependency for SVG imports), `expo-font`, `expo-blur` and `expo-linear-gradient` when the design needs them. Any other new library, or a change to the architecture, state ownership or folder rules, needs a decision: stop and report it with a recommendation instead of doing it.
 - **`songs.json`:** never import it outside `src/api/`.
 - **Native folders:** never edit `ios/` or `android/`.
 - **Git:** don't commit or push. The engineer reviews and commits.

@@ -46,4 +46,5 @@ Run typecheck and lint before calling a task done.
 - To build a screen from Figma and requirements, delegate to the `screen-builder` agent (`.claude/agents/`). Give it a Figma node, the requirements and the scope.
 - Only `src/api/` reads `songs.json`, through paginated endpoints with simulated latency.
 - Server data belongs in TanStack Query and client state in Zustand. Never put playback progress in a store.
+- Use the typed registry pattern for named SVG sets (icons, logos, illustrations). Start from the "Asset registries" section of the `architecture` skill and copy `src/components/Icon/`. Derive the name union from the map with `keyof typeof xMap`, never write it by hand, and never import a raw SVG outside its registry.
 - Never create or edit `ios/` or `android/`. Configure native behaviour through `app.json` and config plugins.
