@@ -4,6 +4,7 @@ import type { CompletedClip, FailedGeneration, InProgressGeneration } from './ty
 // One FlashList row. An in-progress generation and a failed one each render as a single row;
 // a completed generation contributes one row per clip.
 export type SongRow =
+  | { type: 'in-progress-header'; key: string }
   | { type: 'date-header'; key: string; dayKey: string; date: Date }
   | { type: 'in-progress'; key: string; generation: InProgressGeneration }
   | { type: 'failed'; key: string; generation: FailedGeneration }
@@ -15,18 +16,27 @@ export type SongRowType = SongRow['type'];
 const toDayKey = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
+const IN_PROGRESS_SECTION = 'in-progress';
+
 // Expects generations newest first (the API order). A day that spans two pages gets a single header.
+// In-progress generations (at the top in the API order) go under one "New in progress" header
+// instead of their date header.
 export const flattenPages = (pages: readonly GenerationsPage[]): SongRow[] => {
   const rows: SongRow[] = [];
-  let currentDay: string | null = null;
+  let currentSection: string | null = null;
 
   for (const page of pages) {
     for (const generation of page.items) {
       const date = new Date(generation.createdAt);
       const dayKey = toDayKey(date);
-      if (dayKey !== currentDay) {
-        currentDay = dayKey;
-        rows.push({ type: 'date-header', key: `date-${dayKey}`, dayKey, date });
+      const section = generation.status === 'in_progress' ? IN_PROGRESS_SECTION : dayKey;
+      if (section !== currentSection) {
+        currentSection = section;
+        rows.push(
+          section === IN_PROGRESS_SECTION
+            ? { type: 'in-progress-header', key: `in-progress-${generation.id}` }
+            : { type: 'date-header', key: `date-${dayKey}`, dayKey, date },
+        );
       }
 
       switch (generation.status) {

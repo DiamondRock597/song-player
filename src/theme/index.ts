@@ -1,3 +1,4 @@
+export { blurs } from './blurs';
 export { colors } from './colors';
 export { radii } from './radii';
 export { shadows } from './shadows';

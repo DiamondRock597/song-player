@@ -4408,6 +4408,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-blur@npm:~58.0.5":
+  version: 58.0.5
+  resolution: "expo-blur@npm:58.0.5"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 365ae0b2c7e69382724e904b2ed1b515c33772e5c827fcfa6a2e9647364b94d94be3e4ceae4b10563b7fe4ffb7b9a7a1278577a025df1bca5f134a45162bd6b9
+  languageName: node
+  linkType: hard
+
 "expo-constants@npm:~58.0.12, expo-constants@npm:~58.0.13":
   version: 58.0.13
   resolution: "expo-constants@npm:58.0.13"
@@ -7687,6 +7698,7 @@ __metadata:
     expo: ~58.0.16
     expo-asset: ~58.0.17
     expo-audio: ~58.0.9
+    expo-blur: ~58.0.5
     expo-constants: ~58.0.12
     expo-font: ~58.0.9
     expo-image: ~58.0.16

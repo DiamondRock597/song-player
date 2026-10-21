@@ -1,6 +1,7 @@
 import { Tabs, type BottomTabBarProps, type BottomTabNavigationOptions } from 'expo-router/js-tabs';
 
 import { Icon, TabBar } from '@/components';
+import { SongActionsSheet } from '@/features/song-actions';
 
 type TabBarIcon = NonNullable<BottomTabNavigationOptions['tabBarIcon']>;
 
@@ -22,24 +23,28 @@ const disabledTabListeners = { tabPress: (e: { preventDefault: () => void }) => 
 // `index` (Songs) is the group's initial route by default.
 const TabsLayout = () => {
   return (
-    <Tabs tabBar={renderTabBar} screenOptions={{ headerShown: false }}>
-      <Tabs.Screen
-        name="create"
-        options={{ title: 'Create', tabBarIcon: createIcon }}
-        listeners={disabledTabListeners}
-      />
-      <Tabs.Screen name="index" options={{ title: 'Songs', tabBarIcon: songsIcon }} />
-      <Tabs.Screen
-        name="lyrics"
-        options={{ title: 'Lyrics', tabBarIcon: lyricsIcon }}
-        listeners={disabledTabListeners}
-      />
-      <Tabs.Screen
-        name="account"
-        options={{ title: 'Account', tabBarIcon: accountIcon }}
-        listeners={disabledTabListeners}
-      />
-    </Tabs>
+    <>
+      <Tabs tabBar={renderTabBar} screenOptions={{ headerShown: false }}>
+        <Tabs.Screen
+          name="create"
+          options={{ title: 'Create', tabBarIcon: createIcon }}
+          listeners={disabledTabListeners}
+        />
+        <Tabs.Screen name="index" options={{ title: 'Songs', tabBarIcon: songsIcon }} />
+        <Tabs.Screen
+          name="lyrics"
+          options={{ title: 'Lyrics', tabBarIcon: lyricsIcon }}
+          listeners={disabledTabListeners}
+        />
+        <Tabs.Screen
+          name="account"
+          options={{ title: 'Account', tabBarIcon: accountIcon }}
+          listeners={disabledTabListeners}
+        />
+      </Tabs>
+      {/* Global overlay: renders through the root BottomSheetModalProvider portal. */}
+      <SongActionsSheet />
+    </>
   );
 };
 

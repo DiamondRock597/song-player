@@ -61,3 +61,15 @@ export type Generation = InProgressGeneration | FailedGeneration | CompletedGene
 export type SongsData = {
   generations: Generation[];
 };
+
+// UI: the visual state of one list row (an in-progress or failed generation, or a completed clip).
+export type SongItemStatus = 'in-progress' | 'failed' | 'completed';
+
+// UI: the Songs screen filter chips.
+export type SongFilterKey = 'songs' | 'folders' | 'favorites' | 'archive';
+
+export type SongFilter = {
+  key: SongFilterKey;
+  label: string;
+  count: number;
+};

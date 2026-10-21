@@ -124,3 +124,81 @@ https://www.figma.com/design/4R64V2kqls5Wcb5H0bHu44/mockup?node-id=1-3080&t=gtyc
 - remove any shadow for @src/components/tab-bar/tab-bar.tsx
 
 ---
+### 2026-10-21 23:50 · Claude Code
+Build the Songs list UI from the Figma plan. Scope: the list only (SongsList, SongSectionHeader, SongRow, SongCover and the shared parts they need). Do not build the header, the filter chips or the bottom bar in this step.
+
+Data
+- Consume the flat rows from the data layer @src/features/songs/hooks/use-songs-query.ts @src/features/songs/song-rows.ts  Row kinds: date header, in_progress, error, completed. If the data layer isn't merged yet, use a mock hook with the same return shape, and say so in your summary.
+- Keep the types in @src/features/songs/types.ts .
+
+List
+- No inline objects or closures in row props. Row press handlers are empty placeholders for now.
+
+Rows
+- In progress: the cover uses `blurRadius={2}` (no expo-blur), a spinner, a variant tag, "45%" and a progress bar. Styling only.
+- Error: a red cover with a warning icon, an "Error" badge and the failure message.
+- Completed: cover, variant tag and the song's tags. With no cover, show a plain grey 48×48 square.
+- Pressed state: 70% opacity.
+- Section headers say "New in progress" or a formatted date.
+
+Style
+- Create @src/theme/index.ts  (colors, spacing, typography) from the Figma variables. Never hardcode values in components.
+- The title and group-header font, Forma DJR Display, is not available. Use Inter SemiBold as a fallback and leave a one-line TODO.
+- Add `react-native-svg` and `expo-font` if missing.
+
+---
+### 2026-10-22 00:04 · Claude Code
+@src/app/(tabs)/_layout.tsx make bg of tab bar the same as we have on bg in @src/features/songs/ , but also add line above tab bar for separation
+
+---
+### 2026-10-22 00:04 · Claude Code
+https://www.figma.com/design/4R64V2kqls5Wcb5H0bHu44/mockup?node-id=1-3159&t=gtycLHWxK9crDqNm-0
+https://www.figma.com/design/4R64V2kqls5Wcb5H0bHu44/mockup?node-id=1-3132&t=gtycLHWxK9crDqNm-0
+
+Make a  just plan with @.claude/agents/screen-builder.md for search screen, using @src/features/songs/hooks/use-songs-search.ts 
+
+Rules:
+- it should have debounce
+- empty screen with text like not songs
+- cross icon to clear input
+
+---
+### 2026-10-22 00:06 · Claude Code
+Fix this problem Cannot use JSX unless the '--jsx' flag is provided.ts(17004)
+(property) accessibilityLabel: string
+
+---
+### 2026-10-22 00:07 · Claude Code
+Also add header of songs screen with filters and input for serach
+Pressing on songs opens details sheet
+
+---
+### 2026-10-22 00:09 · Claude Code
+@src/features/songs/SongsScreen.tsx remove this SongBackground just use the color background with any image, it's issue from figma mcp
+
+---
+### 2026-10-22 00:13 · Claude Code
+Make a plan with @.claude/agents/screen-builder.md for appearing active player song with @src/core/player/player-service.ts 
+
+https://www.figma.com/design/4R64V2kqls5Wcb5H0bHu44/mockup?node-id=1-5356&t=gtycLHWxK9crDqNm-0 
+
+- you have audio url to play audio, insstall only when user press on play
+- we should have possibility to play/pause song
+- Hide the player
+
+---
+### 2026-10-22 00:18 · Claude Code
+Circular import: song-actions already imports useClip from songs, and songs now imports the sheet's store from song-actions. It works, but the architecture skill forbids circular imports between features, and Metro will log a "Require cycle" warning. The agent suggests moving the sheet's open/close store to src/core/song-actions/, next to core/player, so both features import it from there. That changes where state lives, so it held off. Should I make that move?
+
+
+Fix it and add opening sheet on any songs
+
+
+---
+### 2026-10-22 00:30 · Claude Code
+[image attached] Works, fixes size and add blur for out of sheet, if it's needed to use expo-blur
+@src/features/song-actions/SongActionsSheet.tsx 
+ 
+ https://www.figma.com/design/4R64V2kqls5Wcb5H0bHu44/mockup?node-id=1-5409&t=gtycLHWxK9crDqNm-0
+
+---

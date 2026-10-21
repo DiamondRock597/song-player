@@ -18,7 +18,7 @@ src/
 │   └── <feature>/
 ├── components/          # Shared, domain-agnostic UI (no feature knowledge)
 ├── api/                 # Simulated backend: transport, endpoints, DTO types, queryClient
-├── core/                # App-wide singleton services, no UI (core/player: the one expo-audio player)
+├── core/                # App-wide singleton services and cross-feature stores, no UI (core/player: the one expo-audio player; core/song-actions: which clip the actions sheet shows)
 ├── theme/               # Design tokens from Figma: colors, typography, spacing (created with the first screen)
 └── utils/               # Pure functions (no React, no side effects)
 ```
@@ -51,7 +51,7 @@ core ──▶ utils
 ```
 
 1. `app/` imports screens from `@/features/<feature>` and providers from `@/api`. No logic, no styles beyond layout config.
-2. A feature imports another feature only through `@/features/<other>` (its `index.ts`), never deep paths. No circular feature imports — if two features need the same thing, move it down to `components/`, `api/` or `utils/`.
+2. A feature imports another feature only through `@/features/<other>` (its `index.ts`), never deep paths. No circular feature imports — if two features need the same thing, move it down to `components/`, `api/`, `core/` or `utils/` (e.g. the actions-sheet store lives in `core/song-actions` because `songs` opens the sheet and `song-actions` reads `useClip` from `songs`).
 3. `components/` never imports from `features/` or `api/`. Pass data in via props.
 4. `api/` never imports React components or Zustand stores.
 5. **Nothing outside `src/api/` imports `songs.json`.** The UI only sees it through paginated endpoints.

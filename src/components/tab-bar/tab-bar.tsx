@@ -64,7 +64,8 @@ export const TabBar = ({ state, descriptors, emitter, navigateToTab }: BottomTab
 };
 
 const styles = StyleSheet.create({
-  // Figma tabbar (1:3131): 360×56, 20 side padding, overlays/200 + 0.5 border/100 top border.
+  // Figma tabbar (1:3131): 360×56, 20 side padding. Opaque bg/900 to match the Songs screen
+  // background, with a 1pt divider on top to separate it from the list.
   bar: {
     position: 'absolute',
     left: 0,
@@ -72,8 +73,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     flexDirection: 'row',
     paddingHorizontal: spacing[5],
-    backgroundColor: colors.overlays200,
-    borderTopWidth: 0.5,
-    borderTopColor: colors.border100,
+    backgroundColor: colors.bg900,
+    borderTopWidth: 1,
+    borderTopColor: colors.divider,
   },
 });
