@@ -4,7 +4,8 @@ import { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-nati
 import { stopAndHide, togglePlay, useGlobalPlayer } from '@/core/player';
 import { useSongActionsStore } from '@/core/song-actions';
 
-const PROGRESS_TWEEN_MS = 250;
+import { PROGRESS_TWEEN_MS } from './constants';
+
 const progressEasing = Easing.linear;
 
 const toRatio = (positionSec: number, durationSec: number): number =>
@@ -31,7 +32,9 @@ export const useMiniPlayer = () => {
   }));
 
   const onPressBar = useCallback(() => {
-    if (trackId) openActions(trackId);
+    if (trackId) {
+      openActions(trackId);
+    }
   }, [trackId, openActions]);
 
   const isError = status === 'error';

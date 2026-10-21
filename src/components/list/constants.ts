@@ -1,0 +1,2 @@
+export const DEFAULT_DRAW_DISTANCE = 250;
+export const DEFAULT_PREFETCH_AHEAD = 15;

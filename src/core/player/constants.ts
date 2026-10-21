@@ -1,0 +1,1 @@
+export const PROGRESS_WRITE_INTERVAL_MS = 250;

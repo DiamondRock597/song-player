@@ -1,4 +1,5 @@
 import type { GenerationsPage } from './api';
+import { IN_PROGRESS_SECTION } from './constants';
 import type { CompletedClip, FailedGeneration, Generation, InProgressGeneration } from './types';
 
 export type SongRow =
@@ -32,8 +33,6 @@ export const generationToRows = (generation: Generation, keyPrefix = ''): SongIt
 
 const toDayKey = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-
-const IN_PROGRESS_SECTION = 'in-progress';
 
 // Expects generations newest first (the API order). A day that spans two pages gets a single header.
 // In-progress generations (at the top in the API order) go under one "New in progress" header

@@ -1,0 +1,1 @@
+export { SongSectionHeader } from './SongSectionHeader';

@@ -1,16 +1,11 @@
-import { memo } from 'react';
-import { Pressable, StyleSheet, type PressableStateCallbackType } from 'react-native';
+import { memo, type FC } from 'react';
+import { Pressable, type PressableStateCallbackType } from 'react-native';
 
-import { colors, radii, shadows, spacing } from '@/theme';
+import { colors } from '@/theme';
 
 import { Icon, type TIcon } from '../icons';
-
-const ICON_SIZE = 16;
-const MIN_TOUCH_TARGET = 44;
-const PADDED_SIZE = ICON_SIZE + spacing[2] * 2;
-const PRIMARY_SIZE = ICON_SIZE + spacing[1] * 2;
-const PRIMARY_BORDER_WIDTH = 2;
-const PRESSED_OPACITY = 0.7;
+import { ICON_SIZE, MIN_TOUCH_TARGET, PADDED_SIZE, PRIMARY_SIZE } from './constants';
+import { styles } from './icon-button.styles';
 
 export type IconButtonVariant = 'padded' | 'ghost' | 'primary';
 
@@ -21,12 +16,6 @@ export type IconButtonProps = {
   variant?: IconButtonVariant;
   color?: string;
 };
-
-const sizeByVariant = {
-  padded: PADDED_SIZE,
-  ghost: ICON_SIZE,
-  primary: PRIMARY_SIZE,
-} satisfies Record<IconButtonVariant, number>;
 
 const iconColorByVariant = {
   padded: colors.txt200,
@@ -40,7 +29,13 @@ const hitSlopByVariant = {
   primary: (MIN_TOUCH_TARGET - PRIMARY_SIZE) / 2,
 } satisfies Record<IconButtonVariant, number>;
 
-export const IconButton = memo(({ icon, accessibilityLabel, onPress, variant = 'padded', color }: IconButtonProps) => (
+const styleByVariant = {
+  padded: ({ pressed }: PressableStateCallbackType) => (pressed ? styles.paddedPressed : styles.padded),
+  ghost: ({ pressed }: PressableStateCallbackType) => (pressed ? styles.ghostPressed : styles.ghost),
+  primary: ({ pressed }: PressableStateCallbackType) => (pressed ? styles.primaryPressed : styles.primary),
+} satisfies Record<IconButtonVariant, (state: PressableStateCallbackType) => object>;
+
+export const IconButton: FC<IconButtonProps> = memo(({ icon, accessibilityLabel, onPress, variant = 'padded', color }: IconButtonProps) => (
   <Pressable
     onPress={onPress}
     hitSlop={hitSlopByVariant[variant]}
@@ -53,48 +48,3 @@ export const IconButton = memo(({ icon, accessibilityLabel, onPress, variant = '
 ));
 
 IconButton.displayName = 'IconButton';
-
-const centered = {
-  alignItems: 'center',
-  justifyContent: 'center',
-} as const;
-
-const padded = {
-  ...centered,
-  width: sizeByVariant.padded,
-  height: sizeByVariant.padded,
-  borderRadius: radii.md,
-} as const;
-
-const ghost = {
-  ...centered,
-  width: sizeByVariant.ghost,
-  height: sizeByVariant.ghost,
-  borderRadius: radii.md,
-} as const;
-
-const primary = {
-  ...centered,
-  ...shadows.btnXsSkeumorphic,
-  width: sizeByVariant.primary,
-  height: sizeByVariant.primary,
-  borderWidth: PRIMARY_BORDER_WIDTH,
-  borderColor: colors.primaryButtonBorder,
-  borderRadius: radii.default,
-  backgroundColor: colors.primary500,
-} as const;
-
-const styles = StyleSheet.create({
-  padded,
-  paddedPressed: { ...padded, opacity: PRESSED_OPACITY },
-  ghost,
-  ghostPressed: { ...ghost, opacity: PRESSED_OPACITY },
-  primary,
-  primaryPressed: { ...primary, opacity: PRESSED_OPACITY },
-});
-
-const styleByVariant = {
-  padded: ({ pressed }: PressableStateCallbackType) => (pressed ? styles.paddedPressed : styles.padded),
-  ghost: ({ pressed }: PressableStateCallbackType) => (pressed ? styles.ghostPressed : styles.ghost),
-  primary: ({ pressed }: PressableStateCallbackType) => (pressed ? styles.primaryPressed : styles.primary),
-} satisfies Record<IconButtonVariant, (state: PressableStateCallbackType) => object>;

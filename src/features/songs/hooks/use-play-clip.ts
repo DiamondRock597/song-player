@@ -21,7 +21,9 @@ export const usePlayClip = () => {
   return useCallback(
     (clipId: string) => {
       const clip = findCachedClip(queryClient, clipId);
-      if (clip && clip.audioUrl !== null) playTrack(toTrack(clip));
+      if (clip && clip.audioUrl !== null) {
+        playTrack(toTrack(clip));
+      }
     },
     [queryClient],
   );

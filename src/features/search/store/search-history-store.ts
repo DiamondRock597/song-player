@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
-// Mock history (TEST_TASK allows it): three completed clips from songs.json, newest first.
-const MOCK_HISTORY_CLIP_IDS: readonly string[] = ['clip_000_1', 'clip_001_2', 'clip_002_1'];
+import { MOCK_HISTORY_CLIP_IDS } from '../constants';
 
 type SearchHistoryState = {
   clipIds: readonly string[];

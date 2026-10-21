@@ -1,17 +1,4 @@
-const MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-] as const;
+import { MONTHS } from './constants';
 
 // Local time. 2025-07-18 12:34 -> "18 July 2025, 12:34PM" (uppercase it in the view if the design asks).
 export const formatSectionDate = (date: Date): string => {

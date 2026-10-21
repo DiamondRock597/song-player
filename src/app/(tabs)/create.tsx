@@ -1,6 +1,7 @@
 import { PlaceholderScreen } from '@/components';
+import type { FC } from 'react';
 
-const CreateRoute = () => {
+const CreateRoute: FC = () => {
   return <PlaceholderScreen title="Create" />;
 };
 

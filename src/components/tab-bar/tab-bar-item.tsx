@@ -1,8 +1,11 @@
-import { memo, useCallback, type ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { memo, useCallback, type ReactNode, type FC } from 'react';
+import { Pressable, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { colors, spacing, typography } from '@/theme';
+import { colors, typography } from '@/theme';
+
+import { ICON_SIZE, PRESSED_SCALE, PRESS_SPRING } from './constants';
+import { styles } from './tab-bar-item.styles';
 
 export type TabBarIconRenderer = (props: {
   focused: boolean;
@@ -20,11 +23,7 @@ type TabBarItemProps = {
   onLongPress: (routeKey: string) => void;
 };
 
-const ICON_SIZE = 20;
-const PRESSED_SCALE = 0.88;
-const PRESS_SPRING = { damping: 12, stiffness: 320 };
-
-export const TabBarItem = memo(
+export const TabBarItem: FC<TabBarItemProps> = memo(
   ({ routeKey, label, accessibilityLabel, focused, renderIcon, onPress, onLongPress }: TabBarItemProps) => {
     const color = focused ? colors.brand : colors.txt200;
 
@@ -62,23 +61,3 @@ export const TabBarItem = memo(
 );
 
 TabBarItem.displayName = 'TabBarItem';
-
-const styles = StyleSheet.create({
-  item: {
-    flex: 1,
-    paddingTop: spacing[2],
-    paddingBottom: spacing[3],
-  },
-  content: {
-    alignItems: 'center',
-    gap: spacing[1],
-  },
-  icon: {
-    width: ICON_SIZE,
-    height: ICON_SIZE,
-  },
-  label: {
-    alignSelf: 'stretch',
-    textAlign: 'center',
-  },
-});

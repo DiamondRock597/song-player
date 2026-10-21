@@ -2,8 +2,7 @@ import { FlashList, type FlashListProps, type ViewToken } from '@shopify/flash-l
 import { Image } from 'expo-image';
 import { memo, useCallback, useEffect, useRef } from 'react';
 
-const DEFAULT_DRAW_DISTANCE = 250;
-const DEFAULT_PREFETCH_AHEAD = 15;
+import { DEFAULT_DRAW_DISTANCE, DEFAULT_PREFETCH_AHEAD } from './constants';
 
 // Module-level: FlashList doesn't support changing viewabilityConfig after mount.
 // 1%: a row counts as visible as soon as it peeks in, so prefetching starts as early as possible.
@@ -34,13 +33,17 @@ const ListInner = <T,>({
   const handleViewableItemsChanged: ViewableItemsChanged<T> = useCallback((info) => {
     const { data, getImageUrl, prefetchAhead, onViewableItemsChanged } = latest.current;
     onViewableItemsChanged?.(info);
-    if (!getImageUrl || !data) return;
+    if (!getImageUrl || !data) {
+      return;
+    }
 
     const lastVisible = info.viewableItems.reduce(
       (max: number, token: ViewToken<T>) => (token.index !== null && token.index > max ? token.index : max),
       -1,
     );
-    if (lastVisible < 0) return;
+    if (lastVisible < 0) {
+      return;
+    }
 
     const urls: string[] = [];
     const end = Math.min(data.length, lastVisible + 1 + prefetchAhead);
@@ -51,10 +54,14 @@ const ListInner = <T,>({
         urls.push(url);
       }
     }
-    if (urls.length === 0) return;
+    if (urls.length === 0) {
+      return;
+    }
 
     void Image.prefetch(urls).then((ok) => {
-      if (!ok) urls.forEach((url) => prefetched.current.delete(url));
+      if (!ok) {
+        urls.forEach((url) => prefetched.current.delete(url));
+      }
     });
   }, []);
 

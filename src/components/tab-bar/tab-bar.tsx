@@ -1,11 +1,10 @@
-import { useCallback, useContext, type ReactNode } from 'react';
-import { StyleSheet, View, type LayoutChangeEvent } from 'react-native';
+import { useCallback, useContext, type ReactNode, type FC } from 'react';
+import { View, type LayoutChangeEvent } from 'react-native';
 import { BottomTabBarHeightCallbackContext, type BottomTabBarProps } from 'expo-router/js-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, spacing } from '@/theme';
-
 import { TabBarItem } from './tab-bar-item';
+import { styles } from './tab-bar.styles';
 
 /**
  * Custom bar for Expo Router `<Tabs tabBar={(props) => <TabBar {...props} />} />`
@@ -20,7 +19,7 @@ export type TabBarProps = BottomTabBarProps & {
   accessory?: ReactNode;
 };
 
-export const TabBar = ({ state, descriptors, emitter, navigateToTab, accessory }: TabBarProps) => {
+export const TabBar: FC<TabBarProps> = ({ state, descriptors, emitter, navigateToTab, accessory }) => {
   const insets = useSafeAreaInsets();
   const onHeightChange = useContext(BottomTabBarHeightCallbackContext);
 
@@ -32,7 +31,9 @@ export const TabBar = ({ state, descriptors, emitter, navigateToTab, accessory }
   const handlePress = useCallback(
     (routeKey: string, focused: boolean) => {
       const event = emitter.emit({ type: 'tabPress', target: routeKey, canPreventDefault: true });
-      if (!focused && !event.defaultPrevented) navigateToTab(routeKey);
+      if (!focused && !event.defaultPrevented) {
+        navigateToTab(routeKey);
+      }
     },
     [emitter, navigateToTab],
   );
@@ -72,19 +73,3 @@ export const TabBar = ({ state, descriptors, emitter, navigateToTab, accessory }
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  bar: {
-    flexDirection: 'row',
-    paddingHorizontal: spacing[5],
-    backgroundColor: colors.bg900,
-    borderTopWidth: 1,
-    borderTopColor: colors.divider,
-  },
-});

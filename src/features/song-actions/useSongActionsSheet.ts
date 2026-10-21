@@ -6,7 +6,7 @@ import { showNotImplemented } from '@/components';
 import { useSongActionsStore } from '@/core/song-actions';
 import { useClip } from '@/features/songs';
 
-import type { SongActionKey } from './actions';
+import type { SongActionKey } from './types';
 
 export const useSongActionsSheet = () => {
   const modalRef = useRef<BottomSheetModal>(null);
@@ -16,7 +16,9 @@ export const useSongActionsSheet = () => {
   // Keep the last clip on screen while the sheet animates out after close() clears the id,
   // otherwise the content would vanish mid-animation.
   const [shownClipId, setShownClipId] = useState(clipId);
-  if (clipId !== null && clipId !== shownClipId) setShownClipId(clipId);
+  if (clipId !== null && clipId !== shownClipId) {
+    setShownClipId(clipId);
+  }
 
   const clip = useClip(shownClipId);
 

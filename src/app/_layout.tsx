@@ -3,6 +3,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import type { FC } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -10,10 +11,12 @@ import { queryClient } from '@/api';
 import { ToastHost } from '@/components';
 import { fontAssets } from '@/theme';
 
-const RootLayout = () => {
+const RootLayout: FC = () => {
   const [fontsLoaded, fontError] = useFonts(fontAssets);
 
-  if (!fontsLoaded && !fontError) return null;
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
 
   return (
     <GestureHandlerRootView style={styles.root}>

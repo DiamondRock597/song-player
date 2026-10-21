@@ -1,9 +1,7 @@
 import { infiniteQueryOptions, useInfiniteQuery } from '@tanstack/react-query';
 
 import { fetchGenerationsPage, type GenerationsCursor } from '../api';
-
-export const PAGE_LIMIT = 20;
-const MAX_PAGES = 10;
+import { MAX_PAGES, PAGE_LIMIT } from '../constants';
 
 export const songsListQueryOptions = infiniteQueryOptions({
   queryKey: ['songs', 'list'],

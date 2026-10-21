@@ -2,15 +2,17 @@ import { useInfiniteQuery, useQueryClient, type InfiniteData, type QueryClient }
 import { useCallback, useMemo } from 'react';
 
 import type { GenerationsPage, SongById } from '../api';
+import { SONGS_BY_IDS_KEY } from '../constants';
 import type { Clip } from '../types';
-import { SONGS_BY_IDS_KEY } from './use-songs-by-ids';
 import { songsListQueryOptions } from './use-songs-query';
 
 export const findClip = (pages: readonly GenerationsPage[], clipId: string): Clip | undefined => {
   for (const page of pages) {
     for (const generation of page.items) {
       const clip = (generation.clips as Clip[]).find((item) => item.id === clipId);
-      if (clip) return clip;
+      if (clip) {
+        return clip;
+      }
     }
   }
   return undefined;
@@ -22,14 +24,18 @@ const findClipOutsideList = (queryClient: QueryClient, clipId: string): Clip | u
   const searches = queryClient.getQueriesData<InfiniteData<GenerationsPage>>({ queryKey: ['songs', 'search'] });
   for (const [, data] of searches) {
     const clip = data ? findClip(data.pages, clipId) : undefined;
-    if (clip) return clip;
+    if (clip) {
+      return clip;
+    }
   }
 
   const lookups = queryClient.getQueriesData<SongById[]>({ queryKey: SONGS_BY_IDS_KEY });
   for (const [, data] of lookups) {
     const match = data?.find((item) => item.clipId === clipId);
     const clip = match ? (match.generation.clips as Clip[]).find((item) => item.id === clipId) : undefined;
-    if (clip) return clip;
+    if (clip) {
+      return clip;
+    }
   }
 
   return undefined;
@@ -55,7 +61,9 @@ export const useClip = (clipId: string | null): Clip | undefined => {
   });
 
   const otherClip = useMemo(() => {
-    if (!clipId || listClip) return undefined;
+    if (!clipId || listClip) {
+      return undefined;
+    }
     return findClipOutsideList(queryClient, clipId);
   }, [clipId, listClip, queryClient]);
 

@@ -1,11 +1,8 @@
-import { memo, useEffect, useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { memo, useEffect, useMemo, useState, type FC } from 'react';
+import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { colors, radii, spacing } from '@/theme';
-
-const FILL_HEIGHT = 4;
-const FILL_TRANSITION_MS = 600;
+import { styles } from './progress-bar.styles';
 
 export type ProgressBarProps = {
   progress: number;
@@ -13,7 +10,7 @@ export type ProgressBarProps = {
 
 // Figma `progress-bar-small`. The fill grows from 0 on mount, then follows `progress`,
 // both via a Reanimated CSS transition on `width`. Remount (e.g. `key`) to replay the intro.
-export const ProgressBar = memo(({ progress }: ProgressBarProps) => {
+export const ProgressBar: FC<ProgressBarProps> = memo(({ progress }: ProgressBarProps) => {
   const value = Math.min(100, Math.max(0, progress));
   const [started, setStarted] = useState(false);
 
@@ -38,19 +35,3 @@ export const ProgressBar = memo(({ progress }: ProgressBarProps) => {
 
 ProgressBar.displayName = 'ProgressBar';
 
-const styles = StyleSheet.create({
-  track: {
-    alignSelf: 'stretch',
-    padding: spacing[0.5],
-    borderRadius: radii.lg,
-    backgroundColor: colors.border100,
-  },
-  fill: {
-    height: FILL_HEIGHT,
-    borderRadius: radii.default,
-    backgroundColor: colors.primary500,
-    transitionProperty: 'width',
-    transitionDuration: FILL_TRANSITION_MS,
-    transitionTimingFunction: 'ease-out',
-  },
-});

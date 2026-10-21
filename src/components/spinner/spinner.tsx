@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, type FC } from 'react';
 import Animated, {
   cancelAnimation,
   Easing,
@@ -11,9 +11,7 @@ import Animated, {
 import { colors } from '@/theme';
 
 import { Icon } from '../icons';
-
-const DEFAULT_SIZE = 24;
-const DEFAULT_DURATION_MS = 1000;
+import { DEFAULT_DURATION_MS, DEFAULT_SIZE } from './constants';
 
 export type SpinnerProps = {
   size?: number;
@@ -21,7 +19,7 @@ export type SpinnerProps = {
   duration?: number;
 };
 
-export const Spinner = memo(
+export const Spinner: FC<SpinnerProps> = memo(
   ({ size = DEFAULT_SIZE, color = colors.misc100, duration = DEFAULT_DURATION_MS }: SpinnerProps) => {
     const turn = useSharedValue(0);
 

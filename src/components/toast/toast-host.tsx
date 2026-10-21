@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import type { FC } from 'react';
+import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast, { type ToastConfig } from 'react-native-toast-message';
 
-import { colors, radii, spacing, typography } from '@/theme';
+import { spacing } from '@/theme';
 
-import { MESSAGE_TOAST_TYPE } from './toast';
-
-const VISIBILITY_MS = 2000;
+import { MESSAGE_TOAST_TYPE, VISIBILITY_MS } from './constants';
+import { styles } from './toast-host.styles';
 
 const toastConfig: ToastConfig = {
   [MESSAGE_TOAST_TYPE]: ({ text1 }) => (
@@ -19,7 +19,7 @@ const toastConfig: ToastConfig = {
 };
 
 // Mount once, as the last child of the root layout, so it draws above sheets and modals.
-export const ToastHost = () => {
+export const ToastHost: FC = () => {
   const insets = useSafeAreaInsets();
 
   return (
@@ -30,20 +30,3 @@ export const ToastHost = () => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  toast: {
-    maxWidth: '90%',
-    paddingHorizontal: spacing[4],
-    paddingVertical: spacing[3],
-    borderRadius: radii.xl,
-    borderWidth: 1,
-    borderColor: colors.divider,
-    backgroundColor: colors.bg200,
-  },
-  text: {
-    ...typography.textSmMedium,
-    color: colors.txt900,
-    textAlign: 'center',
-  },
-});

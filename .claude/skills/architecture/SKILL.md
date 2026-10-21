@@ -31,7 +31,10 @@ Add a new top-level folder only if none of the above fits, and record it here.
 features/<feature>/
 ├── <Name>Screen.tsx        # Presentational screen (only if the feature owns a route)
 ├── use<Name>Screen.ts      # All screen logic — see the `screens` skill
-├── components/             # UI used only by this feature
+├── components/             # UI used only by this feature, one folder per component:
+│   ├── <Name>/             #   <Name>.tsx + <Name>.styles.ts + index.ts
+│   └── index.ts
+├── constants.ts            # All constant values of the feature
 ├── hooks/                  # Query hooks + feature logic (use<Thing>.ts)
 ├── store/                  # Zustand store: <feature>.store.ts (client state only)
 ├── types.ts                # Feature-level types (UI models, not DTOs)
@@ -99,7 +102,10 @@ api/
 
 - Named exports everywhere. The only exception is route files in `app/`, which must default-export.
 - Arrow functions everywhere (`export const fn = () => {}`), never `function` declarations. Route files declare `const XRoute = () => …` and end with `export default XRoute;`. A component wrapped in `memo` gets an explicit `displayName`.
-- Styles: `StyleSheet.create` at the bottom of the component file.
+- Styles: each styled component has a sibling `<ComponentFile>.styles.ts` (`SongRow.tsx` → `SongRow.styles.ts`) exporting `export const styles = StyleSheet.create({...})`. Write every style entry out in full. Never build intermediate style-fragment consts (`const row = {...} as const` spread into other entries); repeat the properties instead. Spreading theme tokens (`...typography.body400`) is fine. Pressable `({ pressed }) =>` style callbacks stay in the component. Exception: route files in `app/` keep their few layout styles inline, because Expo Router treats every file in `app/` as a route.
+- Constants: module-level constant values (sizes, durations, copy, static config) go in a `constants.ts` per unit: one per feature (`features/<f>/constants.ts`), one per shared component folder (`components/<x>/constants.ts`), and one each in `api/`, `core/<service>/` and `utils/`. Components and their `.styles.ts` import from it.
+- Components are typed with `FC`: `export const X: FC<XProps> = ({ ... }) => …`, memoized as `export const X: FC<XProps> = memo(({ ... }: XProps) => …)` (`memo<FC<P>>` picks the wrong overload). No-prop components and route files use `FC` bare. Generic components (`List<T>`) can't be `FC` and keep their generic arrow signature.
+- Control flow: always brace bodies (`if (x) {\n  return;\n}`), never `if (x) return;`. ESLint enforces this with `curly: all`.
 - Each folder that is imported from outside has an `index.ts` barrel.
 
 ## Asset registries (Icon and friends)
@@ -148,7 +154,9 @@ export type IconProps = { name: TIcon; size?: number } & SvgProps;
 
 export const Icon = memo(({ name, size = DEFAULT_ICON_SIZE, width, height, ...rest }: IconProps) => {
   const Component = icons[name];
-  if (!Component) return null;
+  if (!Component) {
+    return null;
+  }
   return <Component width={width ?? size} height={height ?? size} {...rest} />;
 });
 

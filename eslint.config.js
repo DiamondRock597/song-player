@@ -7,4 +7,10 @@ module.exports = defineConfig([
   {
     ignores: ['dist/*'],
   },
+  {
+    rules: {
+      // Always brace control-flow bodies: no single-line `if (x) return;`.
+      curly: ['error', 'all'],
+    },
+  },
 ]);

@@ -1,6 +1,7 @@
 import { PlaceholderScreen } from '@/components';
+import type { FC } from 'react';
 
-const AccountRoute = () => {
+const AccountRoute: FC = () => {
   return <PlaceholderScreen title="Account" />;
 };
 

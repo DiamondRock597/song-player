@@ -2,11 +2,11 @@
 // so every endpoint resolves through `simulateRequest` to get realistic
 // latency and cancellation instead of returning data synchronously.
 
+import { LATENCY_MS } from './constants';
+
 export type RequestOptions = {
   signal?: AbortSignal;
 };
-
-const LATENCY_MS = { min: 300, max: 600 };
 
 export class AbortError extends Error {
   name = 'AbortError';

@@ -1,10 +1,10 @@
-import { StyleSheet, View } from 'react-native';
+import type { FC } from 'react';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { KeyboardDock } from '@/components';
 import { MiniPlayer } from '@/features/player';
-import { colors } from '@/theme';
-
+import { styles } from './SearchScreen.styles';
 import { SearchHeader, SearchList } from './components';
 import { useSearchScreen } from './useSearchScreen';
 
@@ -13,7 +13,7 @@ import { useSearchScreen } from './useSearchScreen';
 // on top of the keyboard while it is open, above the bottom safe area otherwise. It is in the
 // layout flow (not floating), so the list shrinks with it and never hides rows behind it.
 // MiniPlayer renders nothing while no track is loaded.
-export const SearchScreen = () => {
+export const SearchScreen: FC = () => {
   const {
     inputRef,
     hasText,
@@ -56,7 +56,3 @@ export const SearchScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg900 },
-});

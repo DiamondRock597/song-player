@@ -2,6 +2,7 @@ import { simulateRequest, type RequestOptions } from '@/api';
 
 import songsJson from '../../../../songs.json';
 
+import { DIACRITICS } from '../constants';
 import type { Generation, SongsData } from '../types';
 
 export type GenerationsCursor = number;
@@ -17,8 +18,6 @@ export type SongById = {
 };
 
 const { generations } = songsJson as SongsData;
-
-const DIACRITICS = /[̀-ͯ]/g;
 
 const normalizeForSearch = (text: string) => text.normalize('NFD').replace(DIACRITICS, '').toLowerCase();
 

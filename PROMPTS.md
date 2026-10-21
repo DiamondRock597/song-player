@@ -299,3 +299,35 @@ Optimisation:
 
 
 ---
+### 2026-10-22 01:36 · Claude Code
+refactor
+- make .constants file where we have const values for all flows
+- don't use such flow if(..) return, insted of use if(..) {
+}
+- @src/app/(tabs)/_layout.tsx you can use object to define icons
+-  
+
+const chipSelected = {
+  ...chip,
+  borderColor: colors.border500,
+  backgroundColor: colors.bg800Active,
+} as const;
+
+const separator = {
+  width: SEPARATOR_SIZE,
+  height: SEPARATOR_SIZE,
+  borderRadius: radii.full,
+  backgroundColor: colors.bg800Hover,
+} as const;
+
+don't make such const for styling, also create *.styles.ts file for each styled component
+
+---
+### 2026-10-22 01:42 · Claude Code
+In components you should create folder with @src/features/song-actions/components/ActionGroup.styles.ts @src/features/song-actions/components/ActionGroup.styles.ts f.e. and make for all components in such way
+
+---
+### 2026-10-22 01:43 · Claude Code
+Also use FC in all react components
+
+---

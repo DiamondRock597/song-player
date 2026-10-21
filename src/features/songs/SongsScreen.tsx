@@ -1,13 +1,13 @@
 import { useBottomTabBarHeight } from 'expo-router/js-tabs';
-import { StyleSheet, View } from 'react-native';
+import type { FC } from 'react';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors } from '@/theme';
-
 import { SongsFilterBar, SongsHeader, SongsList } from './components';
+import { styles } from './SongsScreen.styles';
 import { useSongsScreen } from './useSongsScreen';
 
-export const SongsScreen = () => {
+export const SongsScreen: FC = () => {
   const {
     rows,
     playerInset,
@@ -39,7 +39,3 @@ export const SongsScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg900 },
-});

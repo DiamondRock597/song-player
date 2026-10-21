@@ -1,20 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native';
+import type { FC } from 'react';
+import { Text, View } from 'react-native';
 
-import { colors, typography } from '@/theme';
+import { styles } from './PlaceholderScreen.styles';
 
 type PlaceholderScreenProps = {
   title: string;
 };
 
-export const PlaceholderScreen = ({ title }: PlaceholderScreenProps) => {
+export const PlaceholderScreen: FC<PlaceholderScreenProps> = ({ title }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg900 },
-  title: { ...typography.textTabbarActive, color: colors.txt500 },
-});

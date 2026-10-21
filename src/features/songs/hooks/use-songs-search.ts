@@ -2,9 +2,7 @@ import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { fetchGenerationsPage, type GenerationsCursor } from '../api';
-import { PAGE_LIMIT } from './use-songs-query';
-
-const DEBOUNCE_MS = 250;
+import { DEBOUNCE_MS, PAGE_LIMIT } from '../constants';
 
 export const useSongsSearch = (input: string) => {
   const [debouncedQuery, setDebouncedQuery] = useState(() => input.trim());

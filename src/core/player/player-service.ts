@@ -1,9 +1,8 @@
 import { createAudioPlayer, setAudioModeAsync, type AudioStatus } from 'expo-audio';
 
+import { PROGRESS_WRITE_INTERVAL_MS } from './constants';
 import { initialPlayerState, usePlayerStore } from './player-store';
 import type { PlayerStatus, Track } from './types';
-
-const PROGRESS_WRITE_INTERVAL_MS = 250;
 
 export const audioPlayer = createAudioPlayer();
 
@@ -13,7 +12,9 @@ let audioModeRequested = false;
 // Lazily, once: audio plays even with the iOS silent switch on. Failure is non-fatal (playback
 // still works, it just follows the switch), so a later playTrack may retry.
 const ensureAudioMode = (): void => {
-  if (audioModeRequested) return;
+  if (audioModeRequested) {
+    return;
+  }
   audioModeRequested = true;
   setAudioModeAsync({ playsInSilentMode: true }).catch(() => {
     audioModeRequested = false;
@@ -36,7 +37,9 @@ export const playTrack = (track: Track): void => {
 };
 
 export const togglePlay = (): void => {
-  if (usePlayerStore.getState().currentTrack === null) return;
+  if (usePlayerStore.getState().currentTrack === null) {
+    return;
+  }
   if (audioPlayer.playing) {
     audioPlayer.pause();
   } else {
@@ -64,14 +67,20 @@ export const seekTo = (sec: number): Promise<void> => {
 };
 
 const toPlayerStatus = (status: AudioStatus): PlayerStatus => {
-  if (status.error) return 'error';
-  if (!status.isLoaded || (status.playing && status.isBuffering)) return 'loading';
+  if (status.error) {
+    return 'error';
+  }
+  if (!status.isLoaded || (status.playing && status.isBuffering)) {
+    return 'loading';
+  }
   return status.playing ? 'playing' : 'paused';
 };
 
 audioPlayer.addListener('playbackStatusUpdate', (status) => {
   const state = usePlayerStore.getState();
-  if (state.currentTrack === null) return;
+  if (state.currentTrack === null) {
+    return;
+  }
 
   if (status.didJustFinish) {
     audioPlayer.pause();

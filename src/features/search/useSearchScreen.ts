@@ -3,20 +3,12 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { Keyboard, type TextInputInstance } from 'react-native';
 
 import { useSongActionsStore } from '@/core/song-actions';
-import { usePlayClip, useSongsByIds, useSongsSearch, type SongItemRow } from '@/features/songs';
+import { usePlayClip, useSongsByIds, useSongsSearch } from '@/features/songs';
 
-import {
-  HISTORY_HEADER_ROW,
-  SONGS_HEADER_ROW,
-  toHistoryRows,
-  toResultRows,
-  type SearchRow,
-} from './search-rows';
+import { EMPTY_ITEMS, EMPTY_ROWS, HISTORY_HEADER_ROW, SONGS_HEADER_ROW } from './constants';
+import { toHistoryRows, toResultRows, type SearchRow } from './search-rows';
 import { useSearchHistoryStore } from './store';
 import type { SearchResultsState } from './types';
-
-const EMPTY_ROWS: readonly SearchRow[] = [];
-const EMPTY_ITEMS: readonly SongItemRow[] = [];
 
 export const useSearchScreen = () => {
   const inputRef = useRef<TextInputInstance>(null);
@@ -39,7 +31,9 @@ export const useSearchScreen = () => {
   const historyRows = useMemo(() => (historySongs ? toHistoryRows(historySongs) : EMPTY_ITEMS), [historySongs]);
 
   const rows = useMemo((): readonly SearchRow[] => {
-    if (showsHistory) return historyIds.length > 0 ? [HISTORY_HEADER_ROW, ...historyRows] : EMPTY_ROWS;
+    if (showsHistory) {
+      return historyIds.length > 0 ? [HISTORY_HEADER_ROW, ...historyRows] : EMPTY_ROWS;
+    }
     return [SONGS_HEADER_ROW, ...resultRows];
   }, [showsHistory, historyIds.length, historyRows, resultRows]);
 
@@ -47,13 +41,18 @@ export const useSearchScreen = () => {
   // only before the first search has answered: that is the one time the spinner appears.
   let resultsState: SearchResultsState = 'ready';
   if (!showsHistory) {
-    if (data) resultsState = resultRows.length === 0 ? 'empty' : 'ready';
-    else resultsState = isError ? 'error' : 'loading';
+    if (data) {
+      resultsState = resultRows.length === 0 ? 'empty' : 'ready';
+    } else {
+      resultsState = isError ? 'error' : 'loading';
+    }
   }
 
   const onEndReached = useCallback(() => {
     // Placeholder pages belong to the previous query; wait for the new first page.
-    if (!showsHistory && hasNextPage && !isFetchingNextPage && !isPlaceholderData) void fetchNextPage();
+    if (!showsHistory && hasNextPage && !isFetchingNextPage && !isPlaceholderData) {
+      void fetchNextPage();
+    }
   }, [showsHistory, hasNextPage, isFetchingNextPage, isPlaceholderData, fetchNextPage]);
 
   // `clear()` doesn't fire onChangeText. The input keeps focus, so the keyboard stays open.

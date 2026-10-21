@@ -22,12 +22,16 @@ export const useSongsScreen = () => {
 
   // One fetch at a time: fetchNextPage cancels an in-flight fetchPreviousPage and vice versa.
   const onEndReached = useCallback(() => {
-    if (hasNextPage && !isFetching) void fetchNextPage();
+    if (hasNextPage && !isFetching) {
+      void fetchNextPage();
+    }
   }, [hasNextPage, isFetching, fetchNextPage]);
 
   // Pages above the window were dropped by `maxPages`; load them back when the user scrolls up.
   const onStartReached = useCallback(() => {
-    if (hasPreviousPage && !isFetching) void fetchPreviousPage();
+    if (hasPreviousPage && !isFetching) {
+      void fetchPreviousPage();
+    }
   }, [hasPreviousPage, isFetching, fetchPreviousPage]);
 
   const onPressClip = usePlayClip();
@@ -37,7 +41,9 @@ export const useSongsScreen = () => {
   const onPressCreate = useCallback(() => {}, []);
 
   const onSelectFilter = useCallback((key: string) => {
-    if (isSongFilterKey(key)) setSelectedFilter(key);
+    if (isSongFilterKey(key)) {
+      setSelectedFilter(key);
+    }
   }, []);
 
   return {

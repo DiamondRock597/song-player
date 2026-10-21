@@ -5,15 +5,15 @@ import {
   type BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 import { BlurView } from 'expo-blur';
+import type { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { blurs, colors, radii, shadows, spacing } from '@/theme';
+import { blurs, spacing } from '@/theme';
 
-import { SONG_ACTION_SECTIONS } from './actions';
 import { ActionGroup, SheetHandle, SheetHeader } from './components';
+import { SNAP_POINTS, SONG_ACTION_SECTIONS } from './constants';
+import { styles } from './SongActionsSheet.styles';
 import { useSongActionsSheet } from './useSongActionsSheet';
-
-const SNAP_POINTS = ['100%'];
 
 // Figma `overlay-shape`: overlays/200 tint with a 3px backdrop blur. On Android expo-blur
 // needs a BlurTargetView around the content to blur, so it falls back to a translucent fill there.
@@ -30,7 +30,7 @@ const renderBackdrop = (props: BottomSheetBackdropProps) => (
   </BottomSheetBackdrop>
 );
 
-export const SongActionsSheet = () => {
+export const SongActionsSheet: FC = () => {
   const {
     modalRef,
     topInset,
@@ -78,22 +78,3 @@ export const SongActionsSheet = () => {
     </BottomSheetModal>
   );
 };
-
-const styles = StyleSheet.create({
-  backdrop: {
-    backgroundColor: colors.overlays200,
-  },
-  background: {
-    ...shadows.sheetTop,
-    backgroundColor: colors.bg900,
-    borderTopLeftRadius: radii['2xl'],
-    borderTopRightRadius: radii['2xl'],
-  },
-  content: {
-    gap: 10,
-    paddingHorizontal: spacing[5],
-  },
-  list: {
-    gap: spacing[3],
-  },
-});
