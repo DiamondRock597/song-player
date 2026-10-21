@@ -4,6 +4,8 @@ export { CountTag, type CountTagProps } from './count-tag';
 export { CoverOverlay, type CoverOverlayProps } from './cover-overlay';
 export { IconButton, type IconButtonProps, type IconButtonVariant } from './icon-button';
 export { Icon, type IconProps, type TIcon } from './icons';
+export { KeyboardDock, type KeyboardDockProps } from './keyboard-dock';
+export { List, type ListProps } from './list';
 export { PlaceholderScreen } from './PlaceholderScreen';
 export { ProgressBar, type ProgressBarProps } from './progress-bar';
 export { Spinner, type SpinnerProps } from './spinner';

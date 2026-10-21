@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { fetchGenerationsPage, type GenerationsCursor } from '../api/songs-api';
@@ -24,6 +24,8 @@ export const useSongsSearch = (input: string) => {
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled: debouncedQuery.length > 0,
     staleTime: Infinity,
+    // Old results stay on screen (isPlaceholderData) until the new query's first page arrives.
+    placeholderData: keepPreviousData,
   });
 
   return {

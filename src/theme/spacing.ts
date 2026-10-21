@@ -3,7 +3,7 @@ export const spacing = {
   0: 0,
   0.5: 2,
   1: 4,
-  /** Raw 6 in Figma (chip vertical padding), no variable */
+  /** spacing/1,5 (6): chip vertical padding, search field gap and button padding */
   1.5: 6,
   2: 8,
   3: 12,

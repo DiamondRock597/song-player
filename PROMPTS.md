@@ -248,3 +248,40 @@ Remove this highlight, just add animation when users press in/out
 @src/features/player/mini-player.tsx add animation fade in/out for play/pause, smothly
 
 ---
+### 2026-10-22 00:59 · Claude Code
+Build the Search screen as its own route , opened over the tabs with no tab bar and no mini player.
+Behavior
+- The input is focused on open. The right icon is the search icon while the input is empty. It becomes ✕ only while the input has text. Tapping ✕ clears the text, keeps the keyboard open and brings back the history.
+- Empty input: show the "SEARCH HISTORY" header with a trash button that clears the history, then the history rows.
+- With text: show the "SONGS" header and the result rows. Reuse the Songs list row, with a chevron at the end instead of ⋯. Move the row-picking code into a shared component. Don't copy it.
+- Results come from the existing @src/features/songs/hooks/use-songs-search.ts  (250 ms debounce). Add `placeholderData: keepPreviousData` so old results stay on screen until new ones arrive. Load more on scroll. Use `keyboardDismissMode="on-drag"` on the list.
+- Make the search accent-insensitive. Normalize both the query and the title with `NFD` and strip the diacritics, inside the API layer, so "echos" finds "Échos des Bauges".
+- States that are not in Figma:
+  - Loading: a spinner, shown only on the first search.
+  - No results: "No songs found" and "Try a different title", centred under the header.
+  - Error: "Couldn't load results" and a Retry button.
+- History: an in-memory Zustand store holding song ids, seeded with 3 real song ids from songs.json. Resolve the ids through a new `getSongsByIds` function in the API layer. History is lost on restart, and that is fine.
+- Tapping a result adds its id to the history (newest first, no duplicates) and calls the same `onPressClip` as the Songs list. Do not navigate anywhere.
+- The back chevron calls `router.back()`.
+
+Also add four icons (back chevron, row chevron, search, trash), a spacing token 6, and an optional action button on the section header.
+
+---
+
+### 2026-10-22 01:01 · Claude Code
+Make common flash list screen in @src/components where add such things to add performance for lists
+
+- FlashList v2 is installed: do not use estimatedItemSize or overrideItemLayout. Tune `drawDistance` (try 250, 500 and 800), measure blank cells and memory in the release build for each value, and keep the best one.
+- Prefetch cover images for the next ~15 rows with `Image.prefetch`, driven by `onViewableItemsChanged` with a module-level `viewabilityConfig`. Report whether it removes visible cover pop-in.
+- Reset per-row local state with `useRecyclingState` if any row keeps local state.
+
+---
+### 2026-10-22 01:09 · Claude Code
+Pressing on > in @src/features/search/ open @src/core/song-actions/ 
+Add @src/features/player/mini-player.tsx  for search screen as well
+
+---
+### 2026-10-22 01:12 · Claude Code
+when keyoboard is open player should be vissible above keyboard
+
+---

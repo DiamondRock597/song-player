@@ -1,31 +1,22 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { router } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 
-import { playTrack, useIsPlayerVisible, type Track } from '@/core/player';
+import { useIsPlayerVisible } from '@/core/player';
 import { useSongActionsStore } from '@/core/song-actions';
 import { MINI_PLAYER_HEIGHT } from '@/features/player';
 
 import { DEFAULT_SONG_FILTER, isSongFilterKey, SONG_FILTERS } from './filters';
-import { findClip } from './hooks/use-clip';
-import { songsListQueryOptions, useSongsQuery } from './hooks/use-songs-query';
+import { usePlayClip } from './hooks/use-play-clip';
+import { useSongsQuery } from './hooks/use-songs-query';
 import { flattenPages, type SongRow } from './song-rows';
-import type { CompletedClip, SongFilterKey } from './types';
+import type { SongFilterKey } from './types';
 
 const EMPTY_ROWS: readonly SongRow[] = [];
-
-const toTrack = (clip: CompletedClip): Track => ({
-  id: clip.id,
-  title: clip.title,
-  audioUrl: clip.audioUrl,
-  imageUrl: clip.coverUrl,
-  variant: clip.variant,
-});
 
 // All Songs screen logic lives here: data hooks, player bindings, handlers.
 // SongsScreen.tsx only renders what this hook returns.
 export const useSongsScreen = () => {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = useSongsQuery();
-  const queryClient = useQueryClient();
   const openActions = useSongActionsStore((s) => s.open);
   const isPlayerVisible = useIsPlayerVisible();
   const [selectedFilter, setSelectedFilter] = useState<SongFilterKey>(DEFAULT_SONG_FILTER);
@@ -37,20 +28,14 @@ export const useSongsScreen = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // Row press on a completed clip: play it (toggles if it's the current track, switches otherwise).
-  // The clip is read from the cache at press time, so the callback stays stable across pages.
-  const onPressClip = useCallback(
-    (clipId: string) => {
-      const data = queryClient.getQueryData(songsListQueryOptions.queryKey);
-      const clip = data ? findClip(data.pages, clipId) : undefined;
-      if (clip && clip.audioUrl !== null) playTrack(toTrack(clip));
-    },
-    [queryClient],
-  );
+  // Shared with Search, so both lists behave the same.
+  const onPressClip = usePlayClip();
   // `⋯` (and the press on in-progress / failed rows): open the actions sheet, never play.
   const onPressClipMore = useCallback((clipId: string) => openActions(clipId), [openActions]);
 
-  // Placeholders: the search view is planned separately; `+` is visual only.
-  const onPressSearch = useCallback(() => {}, []);
+  // Search is a root-stack route pushed over the tabs (no tab bar, no mini player).
+  const onPressSearch = useCallback(() => router.push('/search'), []);
+  // Placeholder: `+` is visual only.
   const onPressCreate = useCallback(() => {}, []);
 
   const onSelectFilter = useCallback((key: string) => {

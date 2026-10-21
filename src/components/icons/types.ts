@@ -3,6 +3,8 @@ import type { SvgProps } from 'react-native-svg';
 
 import Box2AltFill from './svg/box-2-alt-fill.svg';
 import ChevronDown from './svg/chevron-down.svg';
+import ChevronLeft from './svg/chevron-left.svg';
+import ChevronRight from './svg/chevron-right.svg';
 import CrossLarge from './svg/cross-large.svg';
 import DotGrid1x3Horizontal from './svg/dot-grid-1x3-horizontal.svg';
 import Download01 from './svg/download-01.svg';
@@ -25,11 +27,14 @@ import Search from './svg/search.svg';
 import SettingsSliderHor from './svg/settings-slider-hor.svg';
 import Share07 from './svg/share-07.svg';
 import Star from './svg/star.svg';
+import Trash04 from './svg/trash-04.svg';
 
 // SVGs use `currentColor`, so the `color` prop tints them.
 export const iconMap = {
   'box-2-alt-fill': Box2AltFill,
   'chevron-down': ChevronDown,
+  'chevron-left': ChevronLeft,
+  'chevron-right': ChevronRight,
   'cross-large': CrossLarge,
   'dot-grid-1x3-horizontal': DotGrid1x3Horizontal,
   'download-01': Download01,
@@ -52,6 +57,7 @@ export const iconMap = {
   'settings-slider-hor': SettingsSliderHor,
   'share-07': Share07,
   star: Star,
+  'trash-04': Trash04,
 } satisfies Record<string, FC<SvgProps>>;
 
 export type TIcon = keyof typeof iconMap;

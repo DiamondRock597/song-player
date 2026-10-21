@@ -1,5 +1,5 @@
 import type { GenerationsPage } from './api/songs-api';
-import type { CompletedClip, FailedGeneration, InProgressGeneration } from './types';
+import type { CompletedClip, FailedGeneration, Generation, InProgressGeneration } from './types';
 
 // One FlashList row. An in-progress generation and a failed one each render as a single row;
 // a completed generation contributes one row per clip.
@@ -11,6 +11,27 @@ export type SongRow =
   | { type: 'clip'; key: string; clip: CompletedClip; generationId: string };
 
 export type SongRowType = SongRow['type'];
+
+/** A row that renders a song (not a section header). Shared with Search through `SongListItem`. */
+export type SongItemRow = Extract<SongRow, { type: 'in-progress' | 'failed' | 'clip' }>;
+
+// The song rows of one generation. `keyPrefix` keeps keys unique when the same song appears
+// in two lists that share a FlashList (e.g. search history and results).
+export const generationToRows = (generation: Generation, keyPrefix = ''): SongItemRow[] => {
+  switch (generation.status) {
+    case 'in_progress':
+      return [{ type: 'in-progress', key: `${keyPrefix}${generation.id}`, generation }];
+    case 'error':
+      return [{ type: 'failed', key: `${keyPrefix}${generation.id}`, generation }];
+    case 'completed':
+      return generation.clips.map((clip) => ({
+        type: 'clip',
+        key: `${keyPrefix}${clip.id}`,
+        clip,
+        generationId: generation.id,
+      }));
+  }
+};
 
 // Local calendar day, e.g. "2026-10-19".
 const toDayKey = (date: Date) =>
@@ -39,19 +60,7 @@ export const flattenPages = (pages: readonly GenerationsPage[]): SongRow[] => {
         );
       }
 
-      switch (generation.status) {
-        case 'in_progress':
-          rows.push({ type: 'in-progress', key: generation.id, generation });
-          break;
-        case 'error':
-          rows.push({ type: 'failed', key: generation.id, generation });
-          break;
-        case 'completed':
-          for (const clip of generation.clips) {
-            rows.push({ type: 'clip', key: clip.id, clip, generationId: generation.id });
-          }
-          break;
-      }
+      rows.push(...generationToRows(generation));
     }
   }
 
@@ -59,3 +68,15 @@ export const flattenPages = (pages: readonly GenerationsPage[]): SongRow[] => {
 };
 
 export const getRowType = (row: SongRow): SongRowType => row.type;
+
+// The cover a row shows, for prefetching. Headers and failed rows have none.
+export const getRowCoverUrl = (row: SongRow): string | null => {
+  switch (row.type) {
+    case 'clip':
+      return row.clip.coverUrl;
+    case 'in-progress':
+      return row.generation.clips[0]?.coverUrl ?? null;
+    default:
+      return null;
+  }
+};

@@ -1,12 +1,13 @@
-import { FlashList, type ListRenderItem } from '@shopify/flash-list';
+import type { ListRenderItem } from '@shopify/flash-list';
 import { memo, useCallback, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
+import { List } from '@/components';
 import { spacing } from '@/theme';
 import { formatSectionDate } from '@/utils';
 
-import { getRowType, type SongRow as SongListRow } from '../song-rows';
-import { SongRow } from './SongRow';
+import { getRowCoverUrl, getRowType, type SongRow as SongListRow } from '../song-rows';
+import { SongListItem } from './SongListItem';
 import { SongSectionHeader } from './SongSectionHeader';
 
 const IN_PROGRESS_TITLE = 'New in progress';
@@ -39,51 +40,13 @@ export const SongsList = memo(
           return <SongSectionHeader title={IN_PROGRESS_TITLE} />;
         case 'date-header':
           return <SongSectionHeader title={formatSectionDate(item.date)} />;
-        case 'in-progress': {
-          const clip = item.generation.clips[0];
-          if (!clip) return null;
+        default:
           return (
-            <SongRow
-              id={clip.id}
-              status="in-progress"
-              title={clip.title}
-              variant={clip.variant}
-              subtitle=""
-              progress={item.generation.progress}
-              coverUrl={clip.coverUrl}
-              onPress={onPressClipMore}
-              onPressMore={onPressClipMore}
-            />
-          );
-        }
-        case 'failed': {
-          const clip = item.generation.clips[0];
-          if (!clip) return null;
-          return (
-            <SongRow
-              id={clip.id}
-              status="failed"
-              title={clip.title}
-              variant={clip.variant}
-              subtitle={item.generation.error}
-              progress={0}
-              coverUrl={null}
-              onPress={onPressClipMore}
-              onPressMore={onPressClipMore}
-            />
-          );
-        }
-        case 'clip':
-          return (
-            <SongRow
-              id={item.clip.id}
-              status="completed"
-              title={item.clip.title}
-              variant={item.clip.variant}
-              subtitle={item.clip.tags}
-              progress={0}
-              coverUrl={item.clip.coverUrl}
-              onPress={onPressClip}
+            <SongListItem
+              row={item}
+              trailing="more"
+              onPressClip={onPressClip}
+              onPressPending={onPressClipMore}
               onPressMore={onPressClipMore}
             />
           );
@@ -98,11 +61,12 @@ export const SongsList = memo(
   );
 
   return (
-    <FlashList
+    <List
       data={rows}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       getItemType={getRowType}
+      getImageUrl={getRowCoverUrl}
       onEndReached={onEndReached}
       onEndReachedThreshold={END_REACHED_THRESHOLD}
       style={styles.list}

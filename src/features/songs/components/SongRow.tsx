@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react';
 import { Pressable, StyleSheet, Text, View, type PressableStateCallbackType } from 'react-native';
 
-import { Badge, CountTag, IconButton, ProgressBar } from '@/components';
+import { Badge, CountTag, IconButton, ProgressBar, type TIcon } from '@/components';
 import { colors, radii, spacing, typography } from '@/theme';
 
 import type { SongItemStatus } from '../types';
@@ -11,6 +11,14 @@ import { SongCover } from './SongCover';
 const SUPPORTING_LINE_HEIGHT = 16;
 const PROGRESS_LABEL_WIDTH = 32;
 const PRESSED_OPACITY = 0.7;
+
+/** The trailing `Action Button` glyph: `more` = `⋯` (Songs list), `chevron` = `>` (Search). Both open the actions. */
+export type SongRowTrailing = 'more' | 'chevron';
+
+const trailingIcon = {
+  more: 'dot-grid-1x3-horizontal',
+  chevron: 'chevron-right',
+} satisfies Record<SongRowTrailing, TIcon>;
 
 type SongRowProps = {
   id: string;
@@ -23,15 +31,29 @@ type SongRowProps = {
   progress: number;
   coverUrl: string | null;
   onPress: (id: string) => void;
+  /** Trailing button press (`⋯` or `>`). */
   onPressMore: (id: string) => void;
+  trailing?: SongRowTrailing;
 };
 
 // Module-level so pressing doesn't allocate a new style per render.
 const rowStyle = ({ pressed }: PressableStateCallbackType) => (pressed ? styles.rowPressed : styles.row);
 
-// Figma `list-item-mobile`: cover, title + variant tag (or Error badge), a supporting line, `⋯` button.
+// Figma `list-item-mobile`: cover, title + variant tag (or Error badge), a supporting line,
+// then the trailing `Action Button` (`⋯` or `>`).
 export const SongRow = memo(
-  ({ id, status, title, variant, subtitle, progress, coverUrl, onPress, onPressMore }: SongRowProps) => {
+  ({
+    id,
+    status,
+    title,
+    variant,
+    subtitle,
+    progress,
+    coverUrl,
+    onPress,
+    onPressMore,
+    trailing = 'more',
+  }: SongRowProps) => {
     const handlePress = useCallback(() => onPress(id), [onPress, id]);
     const handlePressMore = useCallback(() => onPressMore(id), [onPressMore, id]);
 
@@ -67,7 +89,12 @@ export const SongRow = memo(
             </View>
           )}
         </View>
-        <IconButton icon="dot-grid-1x3-horizontal" accessibilityLabel={`More actions for ${title}`} onPress={handlePressMore} />
+        {/* Figma `Action Button`: 8 padding around a 16 icon (32×32); IconButton grows it to 44pt. */}
+        <IconButton
+          icon={trailingIcon[trailing]}
+          accessibilityLabel={`More actions for ${title}`}
+          onPress={handlePressMore}
+        />
       </Pressable>
     );
   },

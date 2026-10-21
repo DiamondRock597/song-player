@@ -28,7 +28,7 @@ export const colors = {
   overlays200: 'rgba(29, 29, 29, 0.15)',
   /** overlays/100 (#1D1D1D at 1%): blurred play/pause layer over a cover */
   overlays100: 'rgba(29, 29, 29, 0.01)',
-  /** Raw stroke of the mini player chevron in Figma (#BDC2CE, no variable) */
+  /** Raw stroke of the mini player chevron and the search field's search / ✕ icons in Figma (#BDC2CE, no variable) */
   chevronIcon: '#BDC2CE',
   /** border/100 (#FFFFFF at 5%): progress bar track */
   border100: 'rgba(255, 255, 255, 0.05)',

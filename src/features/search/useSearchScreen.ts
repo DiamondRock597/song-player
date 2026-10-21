@@ -1,0 +1,107 @@
+import { router } from 'expo-router';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { Keyboard, type TextInputInstance } from 'react-native';
+
+import { useSongActionsStore } from '@/core/song-actions';
+import { usePlayClip, useSongsByIds, useSongsSearch, type SongItemRow } from '@/features/songs';
+
+import {
+  HISTORY_HEADER_ROW,
+  SONGS_HEADER_ROW,
+  toHistoryRows,
+  toResultRows,
+  type SearchRow,
+} from './search-rows';
+import { useSearchHistoryStore } from './store/search-history-store';
+import type { SearchResultsState } from './types';
+
+const EMPTY_ROWS: readonly SearchRow[] = [];
+const EMPTY_ITEMS: readonly SongItemRow[] = [];
+
+// All Search screen logic: input, the debounced search query, history, handlers.
+// SearchScreen.tsx only renders what this hook returns.
+export const useSearchScreen = () => {
+  const inputRef = useRef<TextInputInstance>(null);
+  // The TextInput is uncontrolled; this mirrors its text for the query and the ✕ button.
+  const [input, setInput] = useState('');
+
+  const { data, isError, hasNextPage, isFetchingNextPage, isPlaceholderData, fetchNextPage, refetch } =
+    useSongsSearch(input);
+
+  const historyIds = useSearchHistoryStore((s) => s.clipIds);
+  const addToHistory = useSearchHistoryStore((s) => s.add);
+  const clearHistory = useSearchHistoryStore((s) => s.clear);
+  const { data: historySongs } = useSongsByIds(historyIds);
+
+  const playClip = usePlayClip();
+  const openActions = useSongActionsStore((s) => s.open);
+
+  const showsHistory = input.trim().length === 0;
+
+  const resultRows = useMemo(() => (data ? toResultRows(data.pages) : EMPTY_ITEMS), [data]);
+  const historyRows = useMemo(() => (historySongs ? toHistoryRows(historySongs) : EMPTY_ITEMS), [historySongs]);
+
+  const rows = useMemo((): readonly SearchRow[] => {
+    if (showsHistory) return historyIds.length > 0 ? [HISTORY_HEADER_ROW, ...historyRows] : EMPTY_ROWS;
+    return [SONGS_HEADER_ROW, ...resultRows];
+  }, [showsHistory, historyIds.length, historyRows, resultRows]);
+
+  // `data` includes the previous query's results (keepPreviousData), so there is nothing to show
+  // only before the first search has answered: that is the one time the spinner appears.
+  let resultsState: SearchResultsState = 'ready';
+  if (!showsHistory) {
+    if (data) resultsState = resultRows.length === 0 ? 'empty' : 'ready';
+    else resultsState = isError ? 'error' : 'loading';
+  }
+
+  const onEndReached = useCallback(() => {
+    // Placeholder pages belong to the previous query; wait for the new first page.
+    if (!showsHistory && hasNextPage && !isFetchingNextPage && !isPlaceholderData) void fetchNextPage();
+  }, [showsHistory, hasNextPage, isFetchingNextPage, isPlaceholderData, fetchNextPage]);
+
+  // `clear()` doesn't fire onChangeText. The input keeps focus, so the keyboard stays open.
+  const onClear = useCallback(() => {
+    inputRef.current?.clear();
+    setInput('');
+  }, []);
+
+  // Same press as a Songs list row (plays a completed clip), plus the history entry.
+  // In-progress and failed rows only get the history entry: there is nothing to play.
+  const onPressRow = useCallback(
+    (clipId: string) => {
+      addToHistory(clipId);
+      playClip(clipId);
+    },
+    [addToHistory, playClip],
+  );
+
+  // `>` on a row: the actions sheet, like the Songs list's `⋯` (no history entry, no playback).
+  // The sheet is global (rendered through the root portal, above this route); the keyboard goes
+  // down first so it doesn't cover the sheet.
+  const onPressMore = useCallback(
+    (clipId: string) => {
+      Keyboard.dismiss();
+      openActions(clipId);
+    },
+    [openActions],
+  );
+
+  const onPressBack = useCallback(() => router.back(), []);
+  const onRetry = useCallback(() => void refetch(), [refetch]);
+
+  return {
+    inputRef,
+    hasText: input.length > 0,
+    rows,
+    resultsState,
+    isFetchingNextPage: !showsHistory && isFetchingNextPage,
+    onChangeText: setInput,
+    onClear,
+    onPressBack,
+    onEndReached,
+    onPressRow,
+    onPressMore,
+    onClearHistory: clearHistory,
+    onRetry,
+  };
+};
