@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
+import { colors, typography } from '@/theme';
+
 type PlaceholderScreenProps = {
   title: string;
 };
@@ -7,11 +9,13 @@ type PlaceholderScreenProps = {
 export const PlaceholderScreen = ({ title }: PlaceholderScreenProps) => {
   return (
     <View style={styles.container}>
-      <Text>{title}</Text>
+      <Text style={styles.title}>{title}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  // Same dark background as Songs, so switching tabs doesn't flash a white screen.
+  container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg900 },
+  title: { ...typography.textTabbarActive, color: colors.txt500 },
 });

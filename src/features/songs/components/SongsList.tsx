@@ -19,8 +19,12 @@ type SongsListProps = {
   /** Space to keep clear under the last row (e.g. the tab bar). */
   bottomInset: number;
   onEndReached: () => void;
-  /** Row press and `⋯`, called with the clip id (clips[0].id for in-progress and failed rows). */
+  /** Press on a completed clip row (plays it), called with the clip id. */
   onPressClip: (clipId: string) => void;
+  /**
+   * `⋯` on any row, and the press on in-progress and failed rows (nothing to play there),
+   * called with the clip id (clips[0].id for in-progress and failed rows).
+   */
   onPressClipMore: (clipId: string) => void;
 };
 
@@ -47,7 +51,7 @@ export const SongsList = memo(
               subtitle=""
               progress={item.generation.progress}
               coverUrl={clip.coverUrl}
-              onPress={onPressClip}
+              onPress={onPressClipMore}
               onPressMore={onPressClipMore}
             />
           );
@@ -64,7 +68,7 @@ export const SongsList = memo(
               subtitle={item.generation.error}
               progress={0}
               coverUrl={null}
-              onPress={onPressClip}
+              onPress={onPressClipMore}
               onPressMore={onPressClipMore}
             />
           );

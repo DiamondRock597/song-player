@@ -1,5 +1,6 @@
 import { memo, useCallback, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { colors, spacing, typography } from '@/theme';
 
@@ -20,6 +21,9 @@ type TabBarItemProps = {
 };
 
 const ICON_SIZE = 20;
+// Press squish: the content sinks while held and bounces back on release.
+const PRESSED_SCALE = 0.88;
+const PRESS_SPRING = { damping: 12, stiffness: 320 };
 
 export const TabBarItem = memo(
   ({ routeKey, label, accessibilityLabel, focused, renderIcon, onPress, onLongPress }: TabBarItemProps) => {
@@ -28,6 +32,11 @@ export const TabBarItem = memo(
     const handlePress = useCallback(() => onPress(routeKey, focused), [onPress, routeKey, focused]);
     const handleLongPress = useCallback(() => onLongPress(routeKey), [onLongPress, routeKey]);
 
+    const scale = useSharedValue(1);
+    const handlePressIn = useCallback(() => scale.set(withSpring(PRESSED_SCALE, PRESS_SPRING)), [scale]);
+    const handlePressOut = useCallback(() => scale.set(withSpring(1, PRESS_SPRING)), [scale]);
+    const contentStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.get() }] }));
+
     return (
       <Pressable
         accessibilityRole="tab"
@@ -35,9 +44,11 @@ export const TabBarItem = memo(
         accessibilityLabel={accessibilityLabel}
         onPress={handlePress}
         onLongPress={handleLongPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
         style={styles.item}
       >
-        <View style={styles.content}>
+        <Animated.View style={[styles.content, contentStyle]}>
           <View style={styles.icon}>{renderIcon?.({ focused, color, size: ICON_SIZE })}</View>
           <Text
             numberOfLines={1}
@@ -45,7 +56,7 @@ export const TabBarItem = memo(
           >
             {label}
           </Text>
-        </View>
+        </Animated.View>
       </Pressable>
     );
   },

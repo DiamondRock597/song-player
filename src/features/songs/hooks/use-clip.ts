@@ -5,7 +5,7 @@ import type { GenerationsPage } from '../api/songs-api';
 import type { Clip } from '../types';
 import { songsListQueryOptions } from './use-songs-query';
 
-const findClip = (pages: readonly GenerationsPage[], clipId: string): Clip | undefined => {
+export const findClip = (pages: readonly GenerationsPage[], clipId: string): Clip | undefined => {
   for (const page of pages) {
     for (const generation of page.items) {
       const clip = (generation.clips as Clip[]).find((item) => item.id === clipId);

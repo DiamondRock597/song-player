@@ -1,10 +1,11 @@
 export { Badge, type BadgeProps, type BadgeTone } from './badge';
 export { Chip, type ChipProps } from './chip';
 export { CountTag, type CountTagProps } from './count-tag';
+export { CoverOverlay, type CoverOverlayProps } from './cover-overlay';
 export { IconButton, type IconButtonProps, type IconButtonVariant } from './icon-button';
 export { Icon, type IconProps, type TIcon } from './icons';
 export { PlaceholderScreen } from './PlaceholderScreen';
 export { ProgressBar, type ProgressBarProps } from './progress-bar';
 export { Spinner, type SpinnerProps } from './spinner';
-export { TabBar } from './tab-bar';
+export { TabBar, type TabBarProps } from './tab-bar';
 export { showNotImplemented, showToast, ToastHost } from './toast';

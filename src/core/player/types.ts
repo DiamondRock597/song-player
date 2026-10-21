@@ -4,6 +4,8 @@ export type Track = {
   title: string;
   audioUrl: string;
   imageUrl: string | null;
+  // Clip variant number (1, 2, ...), shown as the player's count tag.
+  variant: number;
 };
 
 export type PlayerStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'error';

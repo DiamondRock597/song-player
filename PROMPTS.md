@@ -202,3 +202,49 @@ Fix it and add opening sheet on any songs
  https://www.figma.com/design/4R64V2kqls5Wcb5H0bHu44/mockup?node-id=1-5409&t=gtycLHWxK9crDqNm-0
 
 ---
+### 2026-10-22 00:44 · Claude Code
+Build the global mini player and wire up playback.
+
+Player service @src/core/player/ 
+- Call setAudioModeAsync lazily, on the first playTrack, behind a module-level flag.
+- Add variant: number to Track.
+- Add stopAndHide(). It pauses, unloads the source (`replace(null)` or the equivalent your installed expo-audio supports; check the SDK types, don't guess), and resets the store to its initial state.
+
+Songs wiring
+- useSongsScreen.onPressClip maps CompletedClip to Track (coverUrl to imageUrl) and calls playTrack. Tapping the current clip toggles it. Tapping another clip switches tracks.
+- Rows show their playing state through useIsTrackPlaying(id), inside the memoized row. It must not subscribe to progress.
+- The list gets bottom padding equal to the player height while the player is visible.
+
+MiniPlayer (src/features/player/)
+- `mini-player.tsx` only renders. `use-mini-player.ts` holds the store reads and the handlers.
+- Mount it in @src/app/(tabs)/_layout.tsx  next to SongActionsSheet. Position it absolutely at `bottom = useBottomTabBarHeight()`. Render nothing while `currentTrack` is null. It slides and fades in and out with Reanimated, on the UI thread.
+- Touch areas:
+  - The play/pause button calls `togglePlay`.
+  - The chevron calls `stopAndHide`.
+  - The rest of the bar calls `useSongActionsStore.open(track.id)`.
+- The progress line's width comes from `positionSec / durationSec` as a Reanimated shared value, updated on the UI thread.
+- States: loading (spinner over the cover), playing, paused and error (an icon).
+- The subtitle is a hard-coded mock constant, `PLAYER_SUBTITLE`, in the player feature.
+
+---
+### 2026-10-22 00:45 · Claude Code
+Pressing only on song plays audio, on ... opens details
+
+---
+### 2026-10-22 00:47 · Claude Code
+@src/features/songs/components/SongRow.tsx add animation for starting progress bar for in-progress song, when it appears, from reanimated transaction
+
+---
+### 2026-10-22 00:49 · Claude Code
+@src/app/(tabs)/_layout.tsx enable other tabs, and add animation like liqued glass for buttons
+
+---
+### 2026-10-22 00:51 · Claude Code
+[image attached]
+Remove this highlight, just add animation when users press in/out
+
+---
+### 2026-10-22 00:55 · Claude Code
+@src/features/player/mini-player.tsx add animation fade in/out for play/pause, smothly
+
+---

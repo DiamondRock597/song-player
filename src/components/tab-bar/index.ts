@@ -1,1 +1,1 @@
-export { TabBar } from './tab-bar';
+export { TabBar, type TabBarProps } from './tab-bar';

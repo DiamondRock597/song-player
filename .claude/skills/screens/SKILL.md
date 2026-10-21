@@ -50,7 +50,7 @@ export default SongsScreen;
 
 Global overlays that sit over the tabs aren't routes:
 
-- **Mini player** (above the tab bar): feature `player`, mounted once in `(tabs)/_layout.tsx`.
+- **Mini player** (above the tab bar): feature `player`, mounted once in `(tabs)/_layout.tsx` through `TabBar`'s `accessory` prop (`useBottomTabBarHeight()` throws outside a screen, so it can't be a sibling of `<Tabs>`). Its height is not in the reported tab bar height: screens add `MINI_PLAYER_HEIGHT` while `useIsPlayerVisible()` is true.
 - **Actions sheet**: feature `song-actions`, a `@gorhom/bottom-sheet` `BottomSheetModal` opened through `useSongActionsStore` from `@/core/song-actions` (`useSongActionsStore.getState().open(clipId)` or a narrow selector), mounted once in `(tabs)/_layout.tsx`. `BottomSheetModalProvider` is already in the root layout. Fixed full height (`snapPoints={['100%']}`, `topInset` = safe-area top), content scrolls; backdrop is an `expo-blur` `BlurView` (iOS only, Android falls back to a translucent fill). Never call the modal's `dismiss()` when it isn't presented: it leaves the modal stuck and later `present()` calls do nothing. The clip is read from the songs cache with `useClip(clipId)` from `@/features/songs`. Rows come from `song-actions/actions.ts`.
 - **Toasts**: `ToastHost` (`components/toast/`) is mounted once in the root layout, after `BottomSheetModalProvider`, so it draws above sheets. Show one with `showToast(text)` / `showNotImplemented()` from `@/components`; never import `react-native-toast-message` directly.
 - **Search**: a screen in feature `search`, pushed over the tabs from the Songs header.
@@ -61,10 +61,11 @@ Update this table whenever a screen is added.
 
 | Screen | Feature | Route | Status |
 |---|---|---|---|
-| `SongsScreen` | `songs` | `(tabs)/index` | In progress — header (title, search/`+` no-ops), filter chips (local selection, mock counts), list (section headers, in-progress / error / completed rows, pagination); every row's press and `⋯` open the actions sheet. Loading/empty/error states, playback and search still to do |
+| `SongsScreen` | `songs` | `(tabs)/index` | In progress — header (title, search/`+` no-ops), filter chips (local selection, mock counts), list (section headers, in-progress / error / completed rows, pagination). A completed row's press plays/toggles/switches the clip (`playTrack`) and shows a pause overlay on its cover while playing; `⋯` (and the press on in-progress/failed rows) opens the actions sheet. The list pads for the mini player while it is visible. Loading/empty/error states and search still to do |
 | Create | — | `(tabs)/create` | Placeholder (visual only) |
 | Lyrics | — | `(tabs)/lyrics` | Placeholder (visual only) |
 | Account | — | `(tabs)/account` | Placeholder (visual only) |
 | `SearchScreen` | `search` | TBD | Planned |
 | `TabBar` (overlay) | — (`components/tab-bar/`) | `(tabs)/_layout.tsx` via `tabBar={TabBar}` | Done — absolute over content; labels/icons from each `Tabs.Screen`'s `title` + `tabBarIcon`. Screens reserve space with `useBottomTabBarHeight()` from `expo-router/js-tabs` |
-| `SongActionsSheet` (overlay) | `song-actions` | `(tabs)/_layout.tsx`, opened via `useSongActionsStore.open(clipId)` (`@/core/song-actions`) | Done: header + 6 action cards, every action toasts "Not implemented yet". Opened from any row's press and `⋯` in `SongsScreen` |
+| `SongActionsSheet` (overlay) | `song-actions` | `(tabs)/_layout.tsx`, opened via `useSongActionsStore.open(clipId)` (`@/core/song-actions`) | Done: header + 6 action cards, every action toasts "Not implemented yet". Opened from a row's `⋯` (and in-progress/failed row presses) in `SongsScreen`, and from the mini player bar |
+| `MiniPlayer` (overlay) | `player` | `(tabs)/_layout.tsx` via `TabBar`'s `accessory` slot (stacked directly above the bar, outside every screen) | Done: 2pt progress line (shared value, UI thread), cover with play/pause/spinner/error overlay (play button, disabled on error), title + variant tag, mock subtitle, chevron = `stopAndHide`, rest of the bar opens the actions sheet. Fades/slides in and out. Screens clear it with `MINI_PLAYER_HEIGHT` from `@/features/player` + `useIsPlayerVisible()` from `@/core/player` |

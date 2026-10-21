@@ -55,7 +55,8 @@ export const SongRow = memo(
                 </Text>
               </View>
               <View style={styles.progressBar}>
-                <ProgressBar progress={progress} />
+                {/* Keyed by song so a recycled row replays the fill-in for the new song. */}
+                <ProgressBar key={id} progress={progress} />
               </View>
             </View>
           ) : (

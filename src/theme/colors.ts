@@ -26,12 +26,18 @@ export const colors = {
   txt200: '#6E6E6E',
   /** overlays/200 (#1D1D1D at 15%) */
   overlays200: 'rgba(29, 29, 29, 0.15)',
+  /** overlays/100 (#1D1D1D at 1%): blurred play/pause layer over a cover */
+  overlays100: 'rgba(29, 29, 29, 0.01)',
+  /** Raw stroke of the mini player chevron in Figma (#BDC2CE, no variable) */
+  chevronIcon: '#BDC2CE',
   /** border/100 (#FFFFFF at 5%): progress bar track */
   border100: 'rgba(255, 255, 255, 0.05)',
   /** bg/900: screen and sheet background */
   bg900: '#0F0F0F',
   /** bg/800: sheet card, tag count */
   bg800: '#191919',
+  /** bg/300: mini player progress track */
+  bg300: '#1E1E1E',
   /** bg/200: tag background, empty cover */
   bg200: '#202020',
   /** bg/100: sheet grabber */

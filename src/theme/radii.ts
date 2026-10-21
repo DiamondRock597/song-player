@@ -2,6 +2,8 @@
 export const radii = {
   /** Raw 3 in Figma: inner box of the tag count */
   xs: 3,
+  /** Border Radius/sm: play/pause layer over a cover */
+  sm: 2,
   /** Border Radius/DEFAULT */
   default: 4,
   /** Border Radius/md */

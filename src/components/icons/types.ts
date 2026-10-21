@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import type { SvgProps } from 'react-native-svg';
 
 import Box2AltFill from './svg/box-2-alt-fill.svg';
+import ChevronDown from './svg/chevron-down.svg';
 import CrossLarge from './svg/cross-large.svg';
 import DotGrid1x3Horizontal from './svg/dot-grid-1x3-horizontal.svg';
 import Download01 from './svg/download-01.svg';
@@ -12,7 +13,9 @@ import Headphones from './svg/headphones.svg';
 import Loading04 from './svg/loading-04.svg';
 import MusicNote01 from './svg/music-note-01.svg';
 import MusicNote02 from './svg/music-note-02.svg';
+import Pause from './svg/pause.svg';
 import Pencil02 from './svg/pencil-02.svg';
+import Play from './svg/play.svg';
 import Playlist from './svg/playlist.svg';
 import PlusLarge from './svg/plus-large.svg';
 import Profile from './svg/profile.svg';
@@ -26,6 +29,7 @@ import Star from './svg/star.svg';
 // SVGs use `currentColor`, so the `color` prop tints them.
 export const iconMap = {
   'box-2-alt-fill': Box2AltFill,
+  'chevron-down': ChevronDown,
   'cross-large': CrossLarge,
   'dot-grid-1x3-horizontal': DotGrid1x3Horizontal,
   'download-01': Download01,
@@ -36,7 +40,9 @@ export const iconMap = {
   'loading-04': Loading04,
   'music-note-01': MusicNote01,
   'music-note-02': MusicNote02,
+  pause: Pause,
   'pencil-02': Pencil02,
+  play: Play,
   playlist: Playlist,
   'plus-large': PlusLarge,
   profile: Profile,

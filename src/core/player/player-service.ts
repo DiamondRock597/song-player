@@ -1,6 +1,6 @@
 import { createAudioPlayer, setAudioModeAsync, type AudioStatus } from 'expo-audio';
 
-import { usePlayerStore } from './player-store';
+import { initialPlayerState, usePlayerStore } from './player-store';
 import type { PlayerStatus, Track } from './types';
 
 const PROGRESS_WRITE_INTERVAL_MS = 250;
@@ -9,12 +9,20 @@ const PROGRESS_WRITE_INTERVAL_MS = 250;
 export const audioPlayer = createAudioPlayer();
 
 let lastProgressWriteAt = 0;
+let audioModeRequested = false;
 
-export const initAudio = async (): Promise<void> => {
-  await setAudioModeAsync({ playsInSilentMode: true });
+// Lazily, once: audio plays even with the iOS silent switch on. Failure is non-fatal (playback
+// still works, it just follows the switch), so a later playTrack may retry.
+const ensureAudioMode = (): void => {
+  if (audioModeRequested) return;
+  audioModeRequested = true;
+  setAudioModeAsync({ playsInSilentMode: true }).catch(() => {
+    audioModeRequested = false;
+  });
 };
 
 export const playTrack = (track: Track): void => {
+  ensureAudioMode();
   if (track.id === usePlayerStore.getState().currentTrack?.id) {
     togglePlay();
     return;
@@ -34,6 +42,21 @@ export const togglePlay = (): void => {
     audioPlayer.pause();
   } else {
     audioPlayer.play();
+  }
+};
+
+// Stops playback, unloads the source and hides the global player.
+// `replace(null)` is a valid AudioSource in the installed expo-audio and releases the current item.
+export const stopAndHide = (): void => {
+  // Reset first: the status listener returns early once currentTrack is null, so the events
+  // pause() and replace(null) emit can't write stale status back.
+  usePlayerStore.setState(initialPlayerState);
+  lastProgressWriteAt = 0;
+  try {
+    audioPlayer.pause();
+    audioPlayer.replace(null);
+  } catch {
+    // Nothing loaded or already released: the store is reset either way.
   }
 };
 

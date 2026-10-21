@@ -29,6 +29,11 @@ export const useIsTrackPlaying = (trackId: string): boolean => {
   );
 };
 
+// Whether the global player is on screen (a track is loaded). Flips only on show/hide.
+export const useIsPlayerVisible = (): boolean => {
+  return usePlayerStore((s) => s.currentTrack !== null);
+};
+
 // Everything the global (mini) player renders. Updates up to ~4/s while playing.
 export const useGlobalPlayer = (): PlayerState => {
   return usePlayerStore(

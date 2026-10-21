@@ -1,6 +1,7 @@
 import { Tabs, type BottomTabBarProps, type BottomTabNavigationOptions } from 'expo-router/js-tabs';
 
 import { Icon, TabBar } from '@/components';
+import { MiniPlayer } from '@/features/player';
 import { SongActionsSheet } from '@/features/song-actions';
 
 type TabBarIcon = NonNullable<BottomTabNavigationOptions['tabBarIcon']>;
@@ -11,36 +12,26 @@ const songsIcon: TabBarIcon = ({ color, size }) => <Icon name="headphones" size=
 const lyricsIcon: TabBarIcon = ({ color, size }) => <Icon name="pencil-02" size={size} color={color} />;
 const accountIcon: TabBarIcon = ({ color, size }) => <Icon name="profile" size={size} color={color} />;
 
+// The global mini player rides in the tab bar's accessory slot, stacked directly above the bar
+// and outside every screen. (useBottomTabBarHeight() only works inside a screen, so a sibling
+// of <Tabs> can't position itself above the bar.) Module-level so the element stays stable.
+const miniPlayer = <MiniPlayer />;
+
 // `tabBar` is invoked as a plain function inside a render callback, so TabBar must be
 // mounted as an element; passing it directly would run its hooks outside a component.
-const renderTabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
-
-// Cancels the tab press, so the tab can't be opened. TabBar emits `tabPress` as preventable.
-const disabledTabListeners = { tabPress: (e: { preventDefault: () => void }) => e.preventDefault() };
+const renderTabBar = (props: BottomTabBarProps) => <TabBar {...props} accessory={miniPlayer} />;
 
 // Tab order follows the design: Create / Songs / Lyrics / Account.
-// Only Songs is enabled; the other tabs are visual placeholders and can't be opened.
+// Songs is the real screen; the other tabs open placeholder screens.
 // `index` (Songs) is the group's initial route by default.
 const TabsLayout = () => {
   return (
     <>
       <Tabs tabBar={renderTabBar} screenOptions={{ headerShown: false }}>
-        <Tabs.Screen
-          name="create"
-          options={{ title: 'Create', tabBarIcon: createIcon }}
-          listeners={disabledTabListeners}
-        />
+        <Tabs.Screen name="create" options={{ title: 'Create', tabBarIcon: createIcon }} />
         <Tabs.Screen name="index" options={{ title: 'Songs', tabBarIcon: songsIcon }} />
-        <Tabs.Screen
-          name="lyrics"
-          options={{ title: 'Lyrics', tabBarIcon: lyricsIcon }}
-          listeners={disabledTabListeners}
-        />
-        <Tabs.Screen
-          name="account"
-          options={{ title: 'Account', tabBarIcon: accountIcon }}
-          listeners={disabledTabListeners}
-        />
+        <Tabs.Screen name="lyrics" options={{ title: 'Lyrics', tabBarIcon: lyricsIcon }} />
+        <Tabs.Screen name="account" options={{ title: 'Account', tabBarIcon: accountIcon }} />
       </Tabs>
       {/* Global overlay: renders through the root BottomSheetModalProvider portal. */}
       <SongActionsSheet />

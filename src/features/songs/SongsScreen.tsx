@@ -13,6 +13,7 @@ import { useSongsScreen } from './useSongsScreen';
 export const SongsScreen = () => {
   const {
     rows,
+    playerInset,
     filters,
     selectedFilter,
     onSelectFilter,
@@ -32,7 +33,7 @@ export const SongsScreen = () => {
       <SongsFilterBar filters={filters} selected={selectedFilter} onSelect={onSelectFilter} />
       <SongsList
         rows={rows}
-        bottomInset={tabBarHeight}
+        bottomInset={tabBarHeight + playerInset}
         onEndReached={onEndReached}
         onPressClip={onPressClip}
         onPressClipMore={onPressClipMore}
