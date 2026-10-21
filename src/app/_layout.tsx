@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { queryClient } from '@/api';
 
-export default function RootLayout() {
+const RootLayout = () => {
   return (
     <GestureHandlerRootView style={styles.root}>
       <QueryClientProvider client={queryClient}>
@@ -18,7 +18,9 @@ export default function RootLayout() {
       </QueryClientProvider>
     </GestureHandlerRootView>
   );
-}
+};
+
+export default RootLayout;
 
 const styles = StyleSheet.create({
   root: { flex: 1 },

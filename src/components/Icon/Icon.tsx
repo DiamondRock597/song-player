@@ -10,15 +10,17 @@ const icons: Partial<Record<string, FC<SvgProps>>> = iconMap;
 
 export type IconProps = { name: TIcon; size?: number } & SvgProps;
 
-export const Icon = memo(function Icon({
+export const Icon = memo(({
   name,
   size = DEFAULT_ICON_SIZE,
   width,
   height,
   ...rest
-}: IconProps) {
+}: IconProps) => {
   const Component = icons[name];
   if (!Component) return null;
 
   return <Component width={width ?? size} height={height ?? size} {...rest} />;
 });
+
+Icon.displayName = 'Icon';

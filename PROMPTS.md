@@ -44,3 +44,41 @@ Add it to skills and rules
 Install react-native-svg and react-native-svg-transformer  and make the Icon component related to apporch, no matter if we don't have svg files for now
 
 ---
+### 2026-10-21 22:53 · Claude Code
+Add the audio layer with expo-audio.
+
+- `src/core/player/player-service.ts`: ONE app-wide player created with `createAudioPlayer()` at module level (not the hook). Export `playTrack(track)`, `togglePlay()` and `seekTo(sec)`. `playTrack` calls `player.replace({ uri })` then `play()`. If the track is already current, it toggles instead. Never create a second player.
+
+---
+### 2026-10-21 22:58 · Claude Code
+Make also store structure for player with zustand
+
+- Define Track in @src/core/player/ with the fields we need from songs.json: id, title, audioUrl, imageUrl. Reuse the existing song types if they exist. Do not duplicate them.
+- @src/core/player/ player-store.ts : `currentTrack`, `status` ('idle' | 'loading' | 'playing' | 'paused' | 'error'), `positionSec`, `durationSec`. Only the service writes to it. Feed it from one `playbackStatusUpdate` listener. Throttle progress writes to ~4/s. On `didJustFinish`, set paused and reset the position.
+- Export selector (a boolean selector, so rows don't re-render on progress) and selector for the global player.
+- Export initAudio that calls `setAudioMode({ playsInSilentMode: true })`.
+
+---
+### 2026-10-21 23:05 · Claude Code
+@songs.json . Define types for objects in json file @src/features/songs/types
+
+---
+### 2026-10-21 23:09 · Claude Code
+- @src/features/songs/songs-api.ts: fetchGenerationsPage({ cursor, limit }) is the only code that imports @songs.json . It paginates by whole generations, so variants 1 and 2 never split across pages. It awaits a random delay of 300–600 ms and returns `{ items, nextCursor }`, with `nextCursor` null on the last page. Keep the cursor an opaque value (the offset).
+- @src/features/songs/use-songs-query.ts: useInfiniteQuery with initialPageParam and getNextPageParam from nextCursor. Use staleTime: Infinity (the data is static) and a `limit` of 20.
+
+---
+### 2026-10-21 23:11 · Claude Code
+Add a pure flattenPages(pages) helper that turns pages into a flat list of rows: date header, generation or clip, and the in_progress row. Also add getRowType, so FlashList can use it for getItemType. Date headers are derived from the generation date. Group by calendar day.
+Create Search in  separate hook, use-songs-search.ts. Filter by title, case-insensitive, through the same API layer: `fetchGenerationsPage` takes an optional `query`. Debounce the input by 250 ms in the hook.
+Make folder for @src/features/songs/hooks and @src/features/songs/api
+
+---
+### 2026-10-21 23:12 · Claude Code
+Also using for simulation of request @src/api/client.ts
+
+---
+### 2026-10-21 23:13 · Claude Code
+And don't use function definition, use arrow function in whole project
+
+---

@@ -6,7 +6,7 @@ export type RequestOptions = {
   signal?: AbortSignal;
 };
 
-const LATENCY_MS = { min: 300, max: 900 };
+const LATENCY_MS = { min: 300, max: 600 };
 
 export class AbortError extends Error {
   name = 'AbortError';
@@ -15,10 +15,10 @@ export class AbortError extends Error {
 const randomLatency = () =>
   LATENCY_MS.min + Math.random() * (LATENCY_MS.max - LATENCY_MS.min);
 
-export function simulateRequest<T>(
+export const simulateRequest = <T>(
   handler: () => T,
   { signal }: RequestOptions = {},
-): Promise<T> {
+): Promise<T> => {
   return new Promise<T>((resolve, reject) => {
     if (signal?.aborted) {
       reject(new AbortError('Request aborted'));
@@ -41,4 +41,4 @@ export function simulateRequest<T>(
 
     signal?.addEventListener('abort', onAbort, { once: true });
   });
-}
+};

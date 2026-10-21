@@ -1,5 +1,7 @@
 import { PlaceholderScreen } from '@/components';
 
-export default function AccountRoute() {
+const AccountRoute = () => {
   return <PlaceholderScreen title="Account" />;
-}
+};
+
+export default AccountRoute;

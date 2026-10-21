@@ -17,10 +17,10 @@ features/<feature>/
 
 ```tsx
 // features/songs/SongsScreen.tsx
-export function SongsScreen() {
+export const SongsScreen = () => {
   const { sections, onEndReached, onPressClip } = useSongsScreen();
   return <SongsList data={sections} onEndReached={onEndReached} onPressClip={onPressClip} />;
-}
+};
 ```
 
 Rules:

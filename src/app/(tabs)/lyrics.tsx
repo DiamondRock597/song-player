@@ -1,5 +1,7 @@
 import { PlaceholderScreen } from '@/components';
 
-export default function LyricsRoute() {
+const LyricsRoute = () => {
   return <PlaceholderScreen title="Lyrics" />;
-}
+};
+
+export default LyricsRoute;

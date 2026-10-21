@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useSongsScreen } from './useSongsScreen';
 
-export function SongsScreen() {
+export const SongsScreen = () => {
   const { title } = useSongsScreen();
   const insets = useSafeAreaInsets();
 
@@ -12,7 +12,7 @@ export function SongsScreen() {
       <Text>{title}</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: { flex: 1 },

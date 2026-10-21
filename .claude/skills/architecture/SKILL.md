@@ -18,6 +18,7 @@ src/
 │   └── <feature>/
 ├── components/          # Shared, domain-agnostic UI (no feature knowledge)
 ├── api/                 # Simulated backend: transport, endpoints, DTO types, queryClient
+├── core/                # App-wide singleton services, no UI (core/player: the one expo-audio player)
 ├── theme/               # Design tokens from Figma: colors, typography, spacing (created with the first screen)
 └── utils/               # Pure functions (no React, no side effects)
 ```
@@ -42,10 +43,11 @@ Create subfolders only when they have content. Planned features: `songs` (list),
 ## Dependency rules
 
 ```
-app ──▶ features ──▶ components, api, theme, utils
+app ──▶ features ──▶ components, api, core, theme, utils
                  └─▶ other features (via their index.ts only)
 components ──▶ theme, utils
 api ──▶ utils
+core ──▶ utils
 ```
 
 1. `app/` imports screens from `@/features/<feature>` and providers from `@/api`. No logic, no styles beyond layout config.
@@ -96,6 +98,7 @@ api/
 | Util | `formatDuration.ts` | `formatDuration` |
 
 - Named exports everywhere. The only exception is route files in `app/`, which must default-export.
+- Arrow functions everywhere (`export const fn = () => {}`), never `function` declarations. Route files declare `const XRoute = () => …` and end with `export default XRoute;`. A component wrapped in `memo` gets an explicit `displayName`.
 - Styles: `StyleSheet.create` at the bottom of the component file.
 - Each folder that is imported from outside has an `index.ts` barrel.
 
@@ -143,11 +146,13 @@ const icons: Partial<Record<string, FC<SvgProps>>> = iconMap;
 
 export type IconProps = { name: TIcon; size?: number } & SvgProps;
 
-export const Icon = memo(function Icon({ name, size = DEFAULT_ICON_SIZE, width, height, ...rest }: IconProps) {
+export const Icon = memo(({ name, size = DEFAULT_ICON_SIZE, width, height, ...rest }: IconProps) => {
   const Component = icons[name];
   if (!Component) return null;
   return <Component width={width ?? size} height={height ?? size} {...rest} />;
 });
+
+Icon.displayName = 'Icon';
 ```
 
 `index.ts` re-exports only the component, its props type and the name type:
